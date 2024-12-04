@@ -1,0 +1,19 @@
+.fieldData {
+  display: flex;
+  gap: 15px;
+  align-items: end;
+}
+label {
+  font-weight: 700;
+}
+.fieldData button {
+  background-color: transparent;
+  border: none;
+  color: #df313c;
+}
+span {
+  color: #d71201;
+}
+select.mainInput {
+  appearance: auto;
+}
