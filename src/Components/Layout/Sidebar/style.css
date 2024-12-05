@@ -6,7 +6,6 @@
     margin-right 0.35s ease-in-out, right 0.35s ease-in-out;
   /* background: #111a20; */
   background: #fff;
-  background-image: url(../../../Assets/images/side-bar-bg.png);
   z-index: 3;
   top: 4rem;
   padding-bottom: 6rem;
@@ -25,7 +24,7 @@
   font-size: 14px;
   font-weight: 600;
   text-decoration: none;
-  /* color: var(--primaryColor); */
+  color: var(--primaryColor);
   color: #212529;
   display: block;
   padding: 0.8rem 1rem;
@@ -35,7 +34,8 @@
 }
 .sideLink:hover span,
 .sideLink.active span {
-  color: #fff;
+  color:  #FFC700;
+  
 }
 
 .sidebar-li {
@@ -51,6 +51,7 @@
 .sideIcon {
   font-size: 16px;
   margin-right: 0.5rem;
+  color:black
 }
 
 /*----- Sidebar Collapsed Start -----*/
@@ -62,6 +63,9 @@
 
 .sidebar.collapsed .sideLinkText {
   display: none;
+}
+.sideLinkText {
+  color:black
 }
 
 .sidebar.collapsed .sideLink:hover .sideLinkText {
@@ -75,6 +79,7 @@
   position: absolute;
   padding: 0.8rem 1rem;
   white-space: nowrap;
+  
 }
 
 .sidebar.collapsed .sideIcon {

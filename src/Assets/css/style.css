@@ -12,7 +12,7 @@
 } */
 
 :root {
-  --primaryColor: #da4e33;
+  --primaryColor: #000000;
   --grayColor: #2e2e2e;
   --redColor: #ff0000;
   --greenColor: #42c900;
@@ -177,7 +177,7 @@ body {
   border-radius: 50%;
   border: 8px solid;
   border-color: #e4e4ed;
-  border-right-color: var(--primaryColor);
+  border-right-color: #FFC700;
   animation: s2 1s infinite linear;
 }
 @keyframes s2 {

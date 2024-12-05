@@ -171,6 +171,10 @@ export const UsersManagement = () => {
       title: "Email",
     },
     {
+      key: "Active subscription",
+      title: "Active subscription",
+    },
+    {
       key: "status",
       title: "status",
     },
@@ -237,6 +241,7 @@ export const UsersManagement = () => {
                             </td>
                             <td>{item?.name}</td>
                             <td>{item?.email}</td>
+                            <td>{"subs name"}</td>
                             <td>
                               {" "}
                               <div className="d-flex justify-content-center align-items-center ">

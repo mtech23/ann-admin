@@ -1,5 +1,5 @@
 import authBg from './authBg.png'
-import logo from './logo.png'
+import logo from './logo.svg'
 import authImage from './authImage.jpg'
 import bell from './bell.png'
 import check from './check.png'

@@ -66,6 +66,7 @@ import Error from "../Screens/Error";
 import CategoryManagement from "../Screens/CategoryManagement";
 import SeriesDetail from "../Screens/CategoryManagement/SeriesDetail";
 import { UsersManagement } from "../Screens/UsersManagement";
+import PackageListing from "../Screens/SubscriptionManagement/PackageListing";
 
 export default function AdminRouter() {
   return (
@@ -83,6 +84,10 @@ export default function AdminRouter() {
         <Route
           path="/book-management"
           element={<ProtectedRoutes Components={BookManagement} />}
+        />
+        <Route
+          path="/subscription-listing"
+          element={<ProtectedRoutes Components={PackageListing} />}
         />
         <Route
           path="/category-management"

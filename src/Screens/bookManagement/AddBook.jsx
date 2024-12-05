@@ -8,14 +8,15 @@ import { SelectBox } from "../../Components/CustomSelect";
 import CustomButton from "../../Components/CustomButton";
 import { useNavigate } from "react-router";
 import { getEntity } from "../../utils";
-
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 export const AddBook = () => {
   const navigate = useNavigate();
   const [modalText, setmodalText] = useState("");
   const [success, setsuccess] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [formData, setFormData] = useState({
-    cover: "",
+    cover: ""
   });
   const [BookCategories, setBookCategories] = useState();
 
@@ -24,7 +25,7 @@ export const AddBook = () => {
       const respo = await getEntity("categories");
       const myCategories = respo.data.map((item) => ({
         id: item.id,
-        name: item.title,
+        name: item.title
       }));
       setBookCategories(myCategories);
       console.log("respo", myCategories);
@@ -33,16 +34,16 @@ export const AddBook = () => {
   const Booktype = [
     {
       key: "0",
-      name: "eBook",
+      name: "eBook"
     },
     {
       key: "1",
-      name: "AudioBook",
+      name: "AudioBook"
     },
     {
       key: "2",
-      name: "Both",
-    },
+      name: "Both"
+    }
   ];
 
   const handleChange = (event) => {
@@ -52,12 +53,12 @@ export const AddBook = () => {
         value == "out of stock" ? false : value == "available" ? true : "";
       setFormData((prevData) => ({
         ...prevData,
-        [name]: val,
+        [name]: val
       }));
     } else {
       setFormData((prevData) => ({
         ...prevData,
-        [name]: value,
+        [name]: value
       }));
     }
   };
@@ -69,7 +70,7 @@ export const AddBook = () => {
       const fileName = file;
       setFormData((prevData) => ({
         ...prevData,
-        [name]: fileName,
+        [name]: fileName
       }));
     }
   };
@@ -114,7 +115,12 @@ export const AddBook = () => {
   useEffect(() => {
     getCategory();
   }, []);
-
+  const handleQuillChange = (value) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      description: value
+    }));
+  };
   return (
     <>
       <DashboardLayout>
@@ -161,7 +167,7 @@ export const AddBook = () => {
                           onChange={handleChange}
                         />
                       </div>
-                      <div className="col-md-6 mb-4">
+                      {/* <div className="col-md-6 mb-4">
                         <SelectBox
                           selectClass="mainInput"
                           label="Select Book Type"
@@ -172,7 +178,7 @@ export const AddBook = () => {
                           option={Booktype}
                           onChange={handleChange}
                         />
-                      </div>
+                      </div> */}
                       {/* <div className="col-md-6 mb-4">
                         <CustomInput
                           label="Enter Audiobook Duration"
@@ -199,7 +205,7 @@ export const AddBook = () => {
                           onChange={handleChange}
                         />
                       </div>
-                      <div className="col-md-6 mb-4">
+                      {/* <div className="col-md-6 mb-4">
                         <CustomInput
                           label="E-Book Price"
                           required
@@ -212,8 +218,8 @@ export const AddBook = () => {
                           value={formData.eBookprice}
                           onChange={handleChange}
                         />
-                      </div>
-                      <div className="col-md-6 mb-4">
+                      </div> */}
+                      {/* <div className="col-md-6 mb-4">
                         <CustomInput
                           label="Audio Book Price"
                           required
@@ -226,7 +232,7 @@ export const AddBook = () => {
                           value={formData.audioBookprice}
                           onChange={handleChange}
                         />
-                      </div>
+                      </div> */}
                       {/* <div className="col-md-6 mb-4">
                         <CustomInput
                           label="Trailer"
@@ -243,31 +249,19 @@ export const AddBook = () => {
                       </div> */}
                       <div className="col-md-6 mb-4">
                         <CustomInput
-                          label="Trailer"
+                          label="Video Trailer"
                           required
                           id="resume"
                           type="file"
-                          placeholder="Trailer"
+                          placeholder="video trailer"
                           labelClass="mainLabel"
                           inputClass="mainInput"
-                          name="trailer"
+                          name="video_trailer"
                           accept=".mp4,.mp3"
-                          onChange={(e) => filehandleChange(e, "trailer")}
+                          onChange={(e) => filehandleChange(e, "video_trailer")}
                         />
                       </div>
-                      <div className="col-md-6 mb-4">
-                        <CustomInput
-                          label="Audio Trailer"
-                          required
-                          id="resume"
-                          type="file"
-                          placeholder="Audiotrailer"
-                          labelClass="mainLabel"
-                          inputClass="mainInput"
-                          name="audiotrailer"
-                          onChange={(e) => filehandleChange(e, "audiotrailer")}
-                        />
-                      </div>
+
                       <div className="col-md-6 mb-4">
                         <CustomInput
                           label="Book Cover"
@@ -281,7 +275,7 @@ export const AddBook = () => {
                           onChange={(e) => filehandleChange(e, "cover")}
                         />
                       </div>
-                      <div className="col-md-6 mb-4">
+                      {/* <div className="col-md-6 mb-4">
                         <CustomInput
                           label="Upload Book"
                           required
@@ -293,8 +287,8 @@ export const AddBook = () => {
                           name="book"
                           onChange={(e) => filehandleChange(e, "book")}
                         />
-                      </div>
-                      <div className="col-md-6 mb-4">
+                      </div> */}
+                      {/* <div className="col-md-6 mb-4">
                         <CustomInput
                           label="Enter Book Language"
                           required
@@ -307,8 +301,8 @@ export const AddBook = () => {
                           value={formData.lang}
                           onChange={handleChange}
                         />
-                      </div>
-                      <div className="col-md-6 mb-4">
+                      </div> */}
+                      {/* <div className="col-md-6 mb-4">
                         <CustomInput
                           label="Amazon Link"
                           required
@@ -321,8 +315,8 @@ export const AddBook = () => {
                           value={formData.amazon_link}
                           onChange={handleChange}
                         />
-                      </div>{" "}
-                      <div className="col-md-6 mb-4">
+                      </div>{" "} */}
+                      {/* <div className="col-md-6 mb-4">
                         <CustomInput
                           label="Kdp Link"
                           required
@@ -335,8 +329,8 @@ export const AddBook = () => {
                           value={formData.kdp_link}
                           onChange={handleChange}
                         />
-                      </div>{" "}
-                      <div className="col-md-6 mb-4">
+                      </div>{" "} */}
+                      {/* <div className="col-md-6 mb-4">
                         <CustomInput
                           label="Hardcover Link"
                           required
@@ -349,8 +343,8 @@ export const AddBook = () => {
                           value={formData.hardcover_link}
                           onChange={handleChange}
                         />
-                      </div>{" "}
-                      <div className="col-md-6 mb-4">
+                      </div>{" "} */}
+                      {/* <div className="col-md-6 mb-4">
                         <CustomInput
                           label="Paperback Link"
                           required
@@ -363,21 +357,15 @@ export const AddBook = () => {
                           value={formData.paperback_link}
                           onChange={handleChange}
                         />
-                      </div>
-                      <div className="col-md-6 mb-4">
+                      </div> */}
+                      <div className="col-md-12 mb-4">
                         <div className="inputWrapper">
                           <div className="form-controls">
                             <label htmlFor="description">Description</label>
-                            <textarea
-                              name="description"
-                              className="form-control shadow border-0"
-                              id="description"
-                              placeholder="Enter Description"
-                              cols="30"
-                              rows="10"
-                              value={formData.description}
-                              onChange={handleChange}
-                            ></textarea>
+                            <ReactQuill
+                              value={formData?.description}
+                              onChange={handleQuillChange}
+                            />
                           </div>
                         </div>
                       </div>

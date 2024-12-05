@@ -228,18 +228,20 @@ export const BookManagement = () => {
                                     />
                                     Edit
                                   </Link>
-                                  <button
-                                    type="button"
-                                    className="bg-transparent border-0 ps-lg-3 pt-1"
+                                  <Link
                                     onClick={() => {
                                       bookdelete(item?.id);
                                     }}
+                                   
+                                    className="tableAction"
                                   >
                                     <FontAwesomeIcon
-                                      icon={faTrash}
-                                    ></FontAwesomeIcon>{" "}
+                                      icon={faEdit}
+                                      className="tableActionIcon"
+                                    />
                                     Delete
-                                  </button>
+                                  </Link>
+                           
                                 </Dropdown.Menu>
                               </Dropdown>
                             </td>

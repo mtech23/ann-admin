@@ -9,7 +9,8 @@ import CustomButton from "../../Components/CustomButton";
 import { SelectBox } from "../../Components/CustomSelect";
 import AddBook from "./AddBook";
 import { getEntity } from "../../utils";
-
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css"; 
 export const EditBook = () => {
   const baseurl = process.env.REACT_APP_BASE_URL;
 
@@ -181,7 +182,12 @@ export const EditBook = () => {
   }, []);
 
   console.log("frodataaaa", formData);
-
+  const handleQuillChange = (value) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      description: value
+    }));
+  };
   return (
     <>
       <DashboardLayout>
@@ -200,10 +206,24 @@ export const EditBook = () => {
                 <div className="row">
                   <div className="col-lg-12">
                     <div className="row">
-                   
+                      {/* <div className="col-md-6 mb-4">
+                        <CustomInput
+                          label="ISBN"
+                          
+                          id="ISBN"
+                          type="text"
+                          placeholder="Enter ISBN"
+                          labelClass="mainLabel"
+                          inputClass="mainInput"
+                          name="ISBN"
+                          value={formData.ISBN}
+                          onChange={handleChange}
+                        />
+                      </div> */}
                       <div className="col-md-6 mb-4">
                         <CustomInput
                           label="Title"
+                          
                           id="jobID"
                           type="text"
                           placeholder="Enter Title"
@@ -214,36 +234,24 @@ export const EditBook = () => {
                           onChange={handleChange}
                         />
                       </div>
-                      <div className="col-md-6 mb-4">
+                      {/* <div className="col-md-6 mb-4">
                         <SelectBox
                           selectClass="mainInput"
                           label="Select Book Type"
                           placeholder="Select Book Type"
+                          
                           name="type"
                           value={formData.type}
                           option={Booktype}
                           onChange={handleChange}
                         />
-                      </div>
-                   
-                      <div className="col-md-6 mb-4">
-                        <CustomInput
-                          label="Enter Pages"
-                          id="schedule_interview"
-                          type="number"
-                          placeholder="Enter Pages"
-                          labelClass="mainLabel"
-                          inputClass="mainInput"
-                          name="pages"
-                          value={formData.pages}
-                          onChange={handleChange}
-                        />
-                      </div>
-                      <div className="col-md-6 mb-4">
+                      </div> */}
+                      {/* <div className="col-md-6 mb-4">
                         <CustomInput
                           label="Enter Audiobook Duration"
+                          
                           id="schedule_interview"
-                          type="text"
+                          type="number"
                           placeholder="Enter Audiobook Duration"
                           labelClass="mainLabel"
                           inputClass="mainInput"
@@ -251,72 +259,80 @@ export const EditBook = () => {
                           value={formData.audiobook_duration}
                           onChange={handleChange}
                         />
-                      </div>
+                      </div> */}
                       <div className="col-md-6 mb-4">
                         <SelectBox
                           selectClass="mainInput"
                           name="book_category_id"
                           label="Select Book Category"
                           placeholder="Select Book Category"
+                          
                           value={formData.book_category_id}
-                          option={categories}
+                          option={BookCategories}
                           onChange={handleChange}
                         />
                       </div>
-                      <div className="col-md-6 mb-4">
+                      {/* <div className="col-md-6 mb-4">
                         <CustomInput
-                          label="eBookprice"
+                          label="E-Book Price"
+                          
                           id="info"
                           type="number"
-                          placeholder="eBookprice"
+                          placeholder="EBook Price"
                           labelClass="mainLabel"
                           inputClass="mainInput"
                           name="eBookprice"
                           value={formData.eBookprice}
                           onChange={handleChange}
                         />
-                      </div>
-                      <div className="col-md-6 mb-4">
+                      </div> */}
+                      {/* <div className="col-md-6 mb-4">
                         <CustomInput
-                          label="audioBookprice"
+                          label="Audio Book Price"
+                          
                           id="info"
                           type="number"
-                          placeholder="audioBookprice"
+                          placeholder="AudioBook Price"
                           labelClass="mainLabel"
                           inputClass="mainInput"
                           name="audioBookprice"
                           value={formData.audioBookprice}
                           onChange={handleChange}
                         />
-                      </div>
-                      <div className="col-md-6 mb-4">
+                      </div> */}
+                      {/* <div className="col-md-6 mb-4">
                         <CustomInput
                           label="Trailer"
-                          id="resume"
-                          type="file"
+                          
+                          id="info"
+                          type="number"
                           placeholder="Trailer"
                           labelClass="mainLabel"
                           inputClass="mainInput"
                           name="trailer"
-                          accept=".mp4,.mp3"
-                          onChange={(e) => filehandleChange(e, "trailer")}
+                          value={formData.trailer}
+                          onChange={handleChange}
                         />
-                      </div>
+                      </div> */}
                       <div className="col-md-6 mb-4">
                         <CustomInput
-                          label="audiotrailer"
+                          label="Video Trailer"
+                          
                           id="resume"
                           type="file"
-                          placeholder="audiotrailer"
+                          placeholder="video trailer"
                           labelClass="mainLabel"
                           inputClass="mainInput"
-                          name="audiotrailer"
-                          onChange={(e) => filehandleChange(e, "audiotrailer")}
+                          name="video_trailer"
+                          accept=".mp4,.mp3"
+                          onChange={(e) => filehandleChange(e, "video_trailer")}
                         />
                       </div>
+
                       <div className="col-md-6 mb-4">
                         <CustomInput
                           label="Book Cover"
+                          
                           id="resume"
                           type="file"
                           placeholder="Book Cover"
@@ -326,9 +342,10 @@ export const EditBook = () => {
                           onChange={(e) => filehandleChange(e, "cover")}
                         />
                       </div>
-                      <div className="col-md-6 mb-4">
+                      {/* <div className="col-md-6 mb-4">
                         <CustomInput
                           label="Upload Book"
+                          
                           id="resume"
                           type="file"
                           placeholder="Book File"
@@ -337,10 +354,11 @@ export const EditBook = () => {
                           name="book"
                           onChange={(e) => filehandleChange(e, "book")}
                         />
-                      </div>
-                      <div className="col-md-6 mb-4">
+                      </div> */}
+                      {/* <div className="col-md-6 mb-4">
                         <CustomInput
                           label="Enter Book Language"
+                          
                           id="info"
                           type="text"
                           placeholder="Enter Book Language"
@@ -350,10 +368,11 @@ export const EditBook = () => {
                           value={formData.lang}
                           onChange={handleChange}
                         />
-                      </div>
-                      <div className="col-md-6 mb-4">
+                      </div> */}
+                      {/* <div className="col-md-6 mb-4">
                         <CustomInput
                           label="Amazon Link"
+                          
                           id="amazon_link"
                           type="url"
                           placeholder="Enter Amazon Link"
@@ -363,59 +382,57 @@ export const EditBook = () => {
                           value={formData.amazon_link}
                           onChange={handleChange}
                         />
-                      </div>{" "}
-                      <div className="col-md-6 mb-4">
+                      </div>{" "} */}
+                      {/* <div className="col-md-6 mb-4">
                         <CustomInput
-                          label="kdp Link"
+                          label="Kdp Link"
+                          
                           id="kdp_link"
                           type="url"
-                          placeholder="Enter kdp link"
+                          placeholder="Enter Kdp Link"
                           labelClass="mainLabel"
                           inputClass="mainInput"
                           name="kdp_link"
                           value={formData.kdp_link}
                           onChange={handleChange}
                         />
-                      </div>{" "}
-                      <div className="col-md-6 mb-4">
+                      </div>{" "} */}
+                      {/* <div className="col-md-6 mb-4">
                         <CustomInput
-                          label="hardcover link"
+                          label="Hardcover Link"
+                          
                           id="hardcover_link"
                           type="url"
-                          placeholder="Enter hardcover link"
+                          placeholder="Enter Hardcover Link"
                           labelClass="mainLabel"
                           inputClass="mainInput"
                           name="hardcover_link"
                           value={formData.hardcover_link}
                           onChange={handleChange}
                         />
-                      </div>{" "}
-                      <div className="col-md-6 mb-4">
+                      </div>{" "} */}
+                      {/* <div className="col-md-6 mb-4">
                         <CustomInput
-                          label="paperback link"
+                          label="Paperback Link"
+                          
                           id="paperback_linkk"
                           type="url"
-                          placeholder="paperback link"
+                          placeholder="Paperback Link"
                           labelClass="mainLabel"
                           inputClass="mainInput"
                           name="paperback_link"
                           value={formData.paperback_link}
                           onChange={handleChange}
                         />
-                      </div>
-                      <div className="col-md-6 mb-4">
+                      </div> */}
+                      <div className="col-md-12 mb-4">
                         <div className="inputWrapper">
                           <div className="form-controls">
                             <label htmlFor="description">Description</label>
-                            <textarea
-                              name="description"
-                              className="form-control shadow border-0"
-                              id="description"
-                              cols="30"
-                              rows="10"
-                              value={formData.description}
-                              onChange={handleChange}
-                            ></textarea>
+                            <ReactQuill
+                              value={formData?.description}
+                              onChange={handleQuillChange}
+                            />
                           </div>
                         </div>
                       </div>
