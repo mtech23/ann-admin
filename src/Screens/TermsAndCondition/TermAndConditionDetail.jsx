@@ -104,7 +104,7 @@ export const TermsAndConditionDetails = (props) => {
   };
 
   useEffect(() => {
-    document.title = "Julieanna | Terms & Condition Detail";
+    document.title = "Ann | Terms & Condition Detail";
   }, []);
 
   const editDetailData = () => {};

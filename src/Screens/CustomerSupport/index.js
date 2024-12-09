@@ -92,7 +92,7 @@ export const CustomerSupport = () => {
   };
 
   useEffect(() => {
-    document.title = "Julieanna | Customer Support";
+    document.title = "Ann | Customer Support";
     AdsListing();
   }, []);
 

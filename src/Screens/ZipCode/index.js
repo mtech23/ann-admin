@@ -91,7 +91,7 @@ export const ZipCode = () => {
 
   const SelectOptions = [];
   useEffect(() => {
-    document.title = "Julieanna | ZipCode List";
+    document.title = "Ann | ZipCode List";
 
     fetchData();
     // fectchBrandData();

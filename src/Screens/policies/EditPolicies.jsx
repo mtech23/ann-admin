@@ -63,7 +63,7 @@ export const EditPolicies = () => {
   };
 
   useEffect(() => {
-    document.title = "Julieanna | Edit Policy";
+    document.title = "Ann | Edit Policy";
   }, []);
 
   return (

@@ -139,7 +139,7 @@ export const TermsAndConditionManagement = () => {
   const currentItems = filterData?.slice(indexOfFirstItem, indexOfLastItem);
 
   useEffect(() => {
-    document.title = "Julieanna | Term & Condition Management";
+    document.title = "Ann | Term & Condition Management";
   }, []);
 
   const policiesData = [

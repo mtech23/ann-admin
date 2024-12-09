@@ -27,7 +27,7 @@
 
 //   useEffect(() => {
 
-//     document.title = 'Julieanna Admin | Currency Management';
+//     document.title = 'Ann Admin | Currency Management';
 //   }, []);
 
 //   // useEffect(() => {

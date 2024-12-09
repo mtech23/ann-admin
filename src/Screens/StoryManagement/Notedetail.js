@@ -41,7 +41,7 @@ export const NoteDateil = () => {
   const notedetail = () => {
     const LogoutData = localStorage.getItem("login");
     console.log("LogoutData", LogoutData);
-    document.title = "Julieanna Admin | Note Detail";
+    document.title = "Ann Admin | Note Detail";
     document.querySelector(".loaderBox").classList.remove("d-none");
     fetch(`${process.env.REACT_APP_BASE_URL}api/story-view/${id}`, {
       method: "GET",

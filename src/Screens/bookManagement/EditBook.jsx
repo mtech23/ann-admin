@@ -178,7 +178,7 @@ export const EditBook = () => {
   };
 
   useEffect(() => {
-    document.title = "Julieanna | Edit Book";
+    document.title = "Ann | Edit Book";
   }, []);
 
   console.log("frodataaaa", formData);

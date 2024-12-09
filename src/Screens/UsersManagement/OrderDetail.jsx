@@ -93,7 +93,7 @@ export const OrdersDetails = () => {
   };
 
   useEffect(() => {
-    document.title = "Julieanna | Order Detail";
+    document.title = "Ann | Order Detail";
   }, []);
 
   const editDetailData = () => {};

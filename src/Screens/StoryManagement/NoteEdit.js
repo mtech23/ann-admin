@@ -52,7 +52,7 @@ export const NoteEdit = () => {
   const notedetail = () => {
     const LogoutData = localStorage.getItem("login");
     console.log("LogoutData", LogoutData);
-    document.title = "Julieanna Admin | Edit Note";
+    document.title = "Ann Admin | Edit Note";
     document.querySelector(".loaderBox").classList.remove("d-none");
     fetch(`${process.env.REACT_APP_BASE_URL}api/story-view/${id}`, {
       method: "GET",

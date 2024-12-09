@@ -5,7 +5,7 @@ import "./style.css";
 
 const Error = () => {
   useEffect(() => {
-    document.title = "Julieanna | Error 404";
+    document.title = "Ann | Error 404";
   }, []);
 
   return (

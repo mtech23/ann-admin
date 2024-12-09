@@ -95,7 +95,7 @@ export const EditOrders = () => {
   };
 
   useEffect(() => {
-    document.title = "Julieanna | Edit Order";
+    document.title = "Ann | Edit Order";
   }, []);
 
   return (

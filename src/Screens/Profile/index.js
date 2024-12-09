@@ -40,7 +40,7 @@ const Profile = () => {
   };
 
   useEffect(() => {
-    document.title = "Julieanna | My Profile";
+    document.title = "Ann | My Profile";
     userprofile();
     // setUserData(currentUser);
   }, []);

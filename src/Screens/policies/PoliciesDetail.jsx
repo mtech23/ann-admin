@@ -101,7 +101,7 @@ export const PoliciesDetails = (props) => {
   };
 
   useEffect(() => {
-    document.title = "Julieanna | Policy Detail";
+    document.title = "Ann | Policy Detail";
   }, []);
 
   const editDetailData = () => {};

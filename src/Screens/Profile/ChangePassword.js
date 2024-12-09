@@ -23,7 +23,7 @@ const ChangePassword = () => {
   };
 
   useEffect(() => {
-    document.title = "Julieanna | Change Password";
+    document.title = "Ann | Change Password";
 
     setUserData(currentUser);
   }, []);

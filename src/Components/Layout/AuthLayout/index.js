@@ -21,7 +21,7 @@ export const AuthLayout = (props) => {
                                         {/* <h1>Food <span>Stadium  </span></h1> */}
                                     </div>
                                     <div className="authFormHeader">
-                                        <h2 className="authTitle">{props?.authTitle}</h2>
+                                        <h2 className="authTitle text-white">{props?.authTitle}</h2>
                                         <p className={props.subauthPara != '' ? 'authPara mb-0 text-light' : 'authPara'}>{props?.authPara}</p>
                                         <p className="authPara">{props?.subauthPara}</p>
                                     </div>

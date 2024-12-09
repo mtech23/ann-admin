@@ -15,7 +15,7 @@ const ForgetPassword3 = () => {
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
-    document.title = "Julieanna | Password Recovery";
+    document.title = "Ann | Password Recovery";
   }, []);
 
   // const handleClick = () => {

@@ -136,7 +136,7 @@ export const PoliciesManagement = () => {
   const currentItems = filterData?.slice(indexOfFirstItem, indexOfLastItem);
 
   useEffect(() => {
-    document.title = "Julieanna | Policy Management";
+    document.title = "Ann | Policy Management";
   }, []);
 
   const policiesData = [

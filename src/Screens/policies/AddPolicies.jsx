@@ -65,7 +65,7 @@ export const AddPolicies = () => {
   };
 
   useEffect(() => {
-    document.title = "Julieanna | Add Policy";
+    document.title = "Ann | Add Policy";
   }, []);
 
   return (

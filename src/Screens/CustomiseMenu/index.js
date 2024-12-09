@@ -93,7 +93,7 @@ export const CustomiseMenu = () => {
   };
 
   useEffect(() => {
-    document.title = "Julieanna | Customise Menu";
+    document.title = "Ann | Customise Menu";
     CustomMenuList();
   }, []);
 

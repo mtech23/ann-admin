@@ -20,7 +20,7 @@ export const Dashboard = () => {
   // const { apiData: leadsAmountReceivedMonthlyData, loading: AmountLoading } = useApi('admin/leads-amount-received-monthly');
 
   useEffect(() => {
-    document.title = "Julieanna Admin | Dashboard";
+    document.title = "Ann Admin | Dashboard";
   }, []);
 
   // useEffect(() => {

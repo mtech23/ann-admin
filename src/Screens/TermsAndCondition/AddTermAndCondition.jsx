@@ -82,7 +82,7 @@ export const AddTermsAndCondition = () => {
   };
 
   useEffect(() => {
-    document.title = "Julieanna | Add Terms & Condition";
+    document.title = "Ann | Add Terms & Condition";
   }, []);
 
   return (

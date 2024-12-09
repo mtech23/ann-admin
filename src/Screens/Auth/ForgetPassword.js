@@ -13,7 +13,7 @@ const ForgetPassword = () => {
   const [formData, setFormData] = useState({});
 
   useEffect(() => {
-    document.title = "Julieanna | Password Recovery";
+    document.title = "Ann | Password Recovery";
   }, []);
 
   // const handleClick = (e) => {

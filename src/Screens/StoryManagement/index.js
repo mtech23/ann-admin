@@ -85,7 +85,7 @@ export const NoteList = () => {
   };
 
   useEffect(() => {
-    document.title = "Julieanna Admin | Note Management";
+    document.title = "Ann Admin | Note Management";
     NoteList();
   }, []);
 

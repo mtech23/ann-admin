@@ -69,7 +69,7 @@ export const EditTermsAndCondition = () => {
   };
 
   useEffect(() => {
-    document.title = "Julieanna | Edit Terms & Condition";
+    document.title = "Ann | Edit Terms & Condition";
   }, []);
 
   return (

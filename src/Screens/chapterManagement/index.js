@@ -106,7 +106,7 @@ export const ChapterManagement = () => {
   const currentItems = filterData?.slice(indexOfFirstItem, indexOfLastItem);
 
   useEffect(() => {
-    document.title = "Julieanna | Book Management";
+    document.title = "Ann | Book Management";
   }, []);
 
   const maleHeaders = [

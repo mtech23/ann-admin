@@ -41,7 +41,7 @@ export const QuizDateil = () => {
   const quizdetail = () => {
     const LogoutData = localStorage.getItem("login");
     console.log("LogoutData", LogoutData);
-    document.title = "Julieanna Admin | Quiz Detail";
+    document.title = "Ann Admin | Quiz Detail";
     document.querySelector(".loaderBox").classList.remove("d-none");
     fetch(`${process.env.REACT_APP_BASE_URL}api/bookquestions/${id}`, {
       method: "GET",

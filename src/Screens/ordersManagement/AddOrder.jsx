@@ -78,7 +78,7 @@ export const AddBook = () => {
   };
 
   useEffect(() => {
-    document.title = "Julieanna | Add Order";
+    document.title = "Ann | Add Order";
   }, []);
 
   return (

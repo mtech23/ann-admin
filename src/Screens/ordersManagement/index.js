@@ -154,7 +154,7 @@ export const OrdersManagement = () => {
   // console.log("Fetch Order data", fetchOrderData);
 
   useEffect(() => {
-    document.title = "Julieanna | Order Management";
+    document.title = "Ann | Order Management";
   }, []);
 
   const maleHeaders = [

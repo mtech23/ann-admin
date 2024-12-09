@@ -414,7 +414,7 @@ export const PackageListing = () => {
   };
 
   useEffect(() => {
-    document.title = "Mike Smith | Admin - Package Listing";
+    document.title = "Ann | Admin - Package Listing";
     fetchSubscriptions();
   }, []);
 

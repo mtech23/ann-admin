@@ -89,7 +89,7 @@ export const QuizList = () => {
   };
 
   useEffect(() => {
-    document.title = "Julieanna Admin | Quiz Management";
+    document.title = "Ann Admin | Quiz Management";
     Quizlisting();
   }, []);
 

@@ -148,7 +148,7 @@ export const UsersManagement = () => {
   // console.log("Fetch Order data", fetchOrderData);
 
   useEffect(() => {
-    document.title = "Julieanna | Order Management";
+    document.title = "Ann | Order Management";
   }, []);
   const toggleDropdown = (id) => {
     setOpenDropdownId(openDropdownId === id ? null : id);

@@ -29,7 +29,7 @@ export const MenuDetails = () => {
 
   useEffect(() => {
     const LogoutData = localStorage.getItem("login");
-    document.title = "Julieanna Admin | Book Detail";
+    document.title = "Ann Admin | Book Detail";
     document.querySelector(".loaderBox").classList.remove("d-none");
     fetch(
       `https://custom.mystagingserver.site/Tim-WDLLC/public/api/admin/book_view/${id}`,

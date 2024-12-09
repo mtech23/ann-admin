@@ -50,7 +50,7 @@ export const AddQuiz = () => {
 
   useEffect(() => {
     // document.title = "Certifires | Add Quiz";
-    document.title = "Julieanna Admin | Add Quiz";
+    document.title = "Ann Admin | Add Quiz";
     // UserData()
   }, []);
 

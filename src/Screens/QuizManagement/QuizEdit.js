@@ -50,7 +50,7 @@ export const QuizEdit = () => {
 
   useEffect(() => {
     // document.title = "Certifires | Edit Quiz";
-    document.title = "Julieanna Admin | Edit Quiz";
+    document.title = "Ann Admin | Edit Quiz";
     // UserData()
   }, []);
 
@@ -116,7 +116,7 @@ export const QuizEdit = () => {
   const quizdetail = () => {
     const LogoutData = localStorage.getItem("login");
     console.log("LogoutData", LogoutData);
-    document.title = "Julieanna | Book Detail";
+    document.title = "Ann | Book Detail";
     document.querySelector(".loaderBox").classList.remove("d-none");
     fetch(`${process.env.REACT_APP_BASE_URL}api/questions/${id}`, {
       method: "GET",

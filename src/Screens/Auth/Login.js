@@ -18,7 +18,7 @@ const AdminLogin = () => {
   console.log(formData.password);
 
   useEffect(() => {
-    document.title = "Julieanna | Login";
+    document.title = "Ann | Login";
   }, []);
 
   const handleSubmit = async (event) => {

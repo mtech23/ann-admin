@@ -34,7 +34,7 @@ const EditProfile = () => {
   };
 
   useEffect(() => {
-    document.title = "Julieanna | Edit Profile";
+    document.title = "Ann | Edit Profile";
     setOptionData(country);
     setUserData(currentUser);
   });

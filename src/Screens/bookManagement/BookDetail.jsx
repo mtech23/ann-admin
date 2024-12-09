@@ -159,7 +159,7 @@ export const BookDetails = () => {
   };
 
   const chapterData = async () => {
-    document.title = "Julieanna | Book Chapters Detail";
+    document.title = "Ann | Book Chapters Detail";
     document.querySelector(".loaderBox").classList.remove("d-none");
 
     try {
