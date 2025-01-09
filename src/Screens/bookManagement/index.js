@@ -50,9 +50,11 @@ export const BookManagement = () => {
     document.querySelector(".loaderBox").classList.remove("d-none");
     try {
       const response = await Getbookslist();
+      console.log('aaaaaaaaaaa',response);
+      
       document.querySelector(".loaderBox").classList.add("d-none");
-      setBooklists(response?.data);
-      setData(response?.data);
+      setBooklists(response?.data || []);
+      setData(response?.data||[]);
     } catch (error) {
       console.error("Error in fetching books:", error);
     }
@@ -102,13 +104,10 @@ export const BookManagement = () => {
 
   const maleHeaders = [
     { key: "id", title: "S.No" },
-    { key: "category", title: "category" },
-    { key: "author", title: "Author" },
+    { key: "Cover", title: "Cover" },
     { key: "Title", title: "Title" },
-    { key: "Pages", title: "Pages" },
-    { key: "Language", title: "Language" },
-    { key: "Types", title: "Types" },
-    // { key: "Audiobook Duration", title: "Audiobook Duration" },
+    { key: "category", title: "category" },
+  
     { key: "action", title: "Action" },
   ];
   const togglePin = async (id) => {
@@ -170,13 +169,10 @@ export const BookManagement = () => {
                         {currentItems?.map((item, index) => (
                           <tr key={index}>
                             <td>{index + 1}</td>
-                            <td>{item?.category.title || "N/A"}</td>
-                            <td>{item?.author}</td>
+                            <td><img src={item.cover} class="avatarIcon  rounded-3 ml-5" width="10px" height="10px"/></td>
                             <td className="text-capitalize">{item?.title}</td>
-                            <td>{item?.pages ? `${item?.pages}` : `0`}</td>
-                            <td>{item?.lang}</td>
-                            <td>{item?.type}</td>
-                            {/* <td>{item?.audiobook_duration}</td> */}
+                            <td>{item?.CategoryId || "N/A"}</td>
+                            
                             <td>
                               <Dropdown
                                 className="tableDropdown"

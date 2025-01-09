@@ -17,27 +17,27 @@ const SeriesCard = ({ data = [], handleDelete, hanldeRoute, handleEdit }) => {
         </div>
 
         <div className="row mt-5 mt-md-4 row-cols-1 row-cols-sm-1 row-cols-md-3 justify-content-center">
-          {data?.map(({ title, parts_count, countOfBooks, id }, index) => (
+          {data?.map(({ title,  id }, index) => (
             <div className="col" key={index}>
               <div className="service-card">
                 <h3>{title}</h3>
                 <p>
-                  <FontAwesomeIcon
+                  {/* <FontAwesomeIcon
                     icon={faEye}
                     className="tableActionIcon"
                     onClick={() => hanldeRoute(title)}
-                  />
+                  /> */}
                   <FontAwesomeIcon
                     icon={faEdit}
                     className="tableActionIcon"
-                    onClick={() => handleEdit({ title, parts_count, id })}
+                    onClick={() => handleEdit({ title, id })}
                   />
                   <FontAwesomeIcon
                     icon={faTrashCan}
                     onClick={() => handleDelete(id)}
                   />
                 </p>
-                <p>Books count : {countOfBooks}</p>
+                {/* <p>Books count : {countOfBooks}</p> */}
               </div>
             </div>
           ))}

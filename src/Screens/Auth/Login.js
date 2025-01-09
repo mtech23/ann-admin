@@ -31,7 +31,7 @@ const AdminLogin = () => {
     document.querySelector(".loaderBox").classList.remove("d-none");
 
     const apiUrl =
-      "https://custom3.mystagingserver.site/julieanna-api/public/api/login-user";
+      "https://custom3.mystagingserver.site:5010/api/auth/login";
 
     try {
       const response = await fetch(apiUrl, {

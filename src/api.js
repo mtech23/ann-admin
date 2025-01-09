@@ -2,7 +2,7 @@ import { ALERT_TYPES } from "./constants";
 import { toastAlert } from "./utils";
 
 // const url = "https://custom3.mystagingserver.site/Mike-Smith";
-const url = `${process.env.REACT_APP_BASE_URL}api/`;
+const url = `${process.env.REACT_APP_BASE_URL}`;
 //SIGN UP
 export const userSignUpRequest = async (type, data) => {
   try {
@@ -91,11 +91,12 @@ const LogoutData = localStorage.getItem("login");
 //AddBook
 export const Addbook = async (data, id = null) => {
   try {
-    const res = await fetch(id ? `${url}books/${id}` : `${url}books`, {
+    const res = await fetch(id ? `${url}book/${id}` : `${url}book`, {
       method: "POST",
       headers: {
         Accept: "application/json",
         Authorization: `Bearer ${localStorage.getItem("login")}`,
+        // content: 'm'
       },
       body: data,
     });
@@ -323,7 +324,7 @@ export const Getchaptersdetailbyid = async (id) => {
 //Get Books   list
 export const Getbookslist = async () => {
   try {
-    const res = await fetch(`${url}books`, {
+    const res = await fetch(`${url}book`, {
       method: "Get",
       headers: {
         "Content-Type": "application/json",
@@ -351,7 +352,7 @@ export const Getbookslist = async () => {
 //Get Books Delete  list
 export const GetbooksDelete = async (id) => {
   try {
-    const res = await fetch(`${url}books/${id}`, {
+    const res = await fetch(`${url}book?id=${id}`, {
       method: "Delete",
       headers: {
         "Content-Type": "application/json",
@@ -380,7 +381,7 @@ export const GetbooksDelete = async (id) => {
 export const GetBookdetail = async (id) => {
   console.log("ides", id);
   try {
-    const res = await fetch(`${url}books/${id}`, {
+    const res = await fetch(`${url}book?bookId=${id}`, {
       method: "Get",
       headers: {
         "Content-Type": "application/json",
@@ -856,7 +857,7 @@ export const pageDelete = async (id) => {
 
 export const fetchCategoriesOptions = async () => {
   try {
-    const res = await fetch(`${url}categories`, {
+    const res = await fetch(`${url}admin/category`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -890,8 +891,8 @@ export const addcategory = async (data) => {
   }
 
   try {
-    const res = await fetch(`${url}addcategory`, {
-      method: "POST",
+    const res = await fetch(data.id ?`${url}category?id=${data.id}` : `${url}category`, {
+      method: data.id  ? "PUT" :"POST",
       headers: {
         Authorization: `Bearer ${localStorage.getItem("login")}`,
       },

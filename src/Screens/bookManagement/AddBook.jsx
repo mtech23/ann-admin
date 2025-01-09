@@ -16,13 +16,13 @@ export const AddBook = () => {
   const [success, setsuccess] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [formData, setFormData] = useState({
-    cover: ""
+    
   });
   const [BookCategories, setBookCategories] = useState();
 
   const getCategory = async (first) => {
     try {
-      const respo = await getEntity("categories");
+      const respo = await getEntity("category");
       const myCategories = respo.data.map((item) => ({
         id: item.id,
         name: item.title
@@ -196,11 +196,11 @@ export const AddBook = () => {
                       <div className="col-md-6 mb-4">
                         <SelectBox
                           selectClass="mainInput"
-                          name="book_category_id"
+                          name="Catid"
                           label="Select Book Category"
                           placeholder="Select Book Category"
                           required
-                          value={formData.book_category_id}
+                          value={formData.Catid}
                           option={BookCategories}
                           onChange={handleChange}
                         />
@@ -249,16 +249,16 @@ export const AddBook = () => {
                       </div> */}
                       <div className="col-md-6 mb-4">
                         <CustomInput
-                          label="Video Trailer"
+                          label="Video"
                           required
-                          id="resume"
+                          id="video"
                           type="file"
-                          placeholder="video trailer"
+                          placeholder="video"
                           labelClass="mainLabel"
                           inputClass="mainInput"
-                          name="video_trailer"
+                          name="video"
                           accept=".mp4,.mp3"
-                          onChange={(e) => filehandleChange(e, "video_trailer")}
+                          onChange={(e) => filehandleChange(e, "video")}
                         />
                       </div>
 
@@ -271,8 +271,8 @@ export const AddBook = () => {
                           placeholder="Book Cover"
                           labelClass="mainLabel"
                           inputClass="mainInput"
-                          name="cover"
-                          onChange={(e) => filehandleChange(e, "cover")}
+                          name="image"
+                          onChange={(e) => filehandleChange(e, "image")}
                         />
                       </div>
                       {/* <div className="col-md-6 mb-4">

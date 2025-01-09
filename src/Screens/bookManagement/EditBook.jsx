@@ -21,81 +21,7 @@ export const EditBook = () => {
     cover: "",
   });
   const [categories, setCategories] = useState([]);
-  const Booktype = [
-    {
-      key: "0",
-      name: "eBook",
-    },
-    {
-      key: "1",
-      name: "AudioBook",
-    },
-    {
-      key: "2",
-      name: "Both",
-    },
-  ];
-  const BookCategories = [
-    {
-      id: 1,
-      name: "Fiction",
-    },
-    {
-      id: 2,
-      name: "Best Seller",
-    },
-    {
-      id: 3,
-      name: "Most Sold",
-    },
-    {
-      id: 4,
-      name: "Thriller",
-    },
-    {
-      id: 5,
-      name: "Mystery",
-    },
-    {
-      id: 6,
-      name: "History",
-    },
-    {
-      id: 7,
-      name: "Short Stories",
-    },
-    {
-      id: 8,
-      name: "Romance",
-    },
-    {
-      id: 9,
-      name: "Biography",
-    },
-    {
-      id: 10,
-      name: "Crime",
-    },
-    {
-      id: 11,
-      name: "Test Category",
-    },
-    {
-      id: 12,
-      name: "test Category 1",
-    },
-  ];
-
-  const availability = [
-    {
-      key: false,
-      name: "out of stock",
-    },
-    {
-      key: true,
-      name: "available",
-    },
-  ];
+ 
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -129,14 +55,14 @@ export const EditBook = () => {
   const bookdetail = async () => {
     try {
       const response = await GetBookdetail(id);
-      setFormData(response?.data);
+      setFormData(response?.book);
     } catch (error) {
       console.error("Error in logging in:", error);
     }
   };
 
   const getCategory = async () => {
-    const resp = await getEntity("categories");
+    const resp = await getEntity("category");
     const formattedCategoriesData = resp.data.map((item) => ({
       key: item.id,
       name: item.title,
@@ -263,12 +189,12 @@ export const EditBook = () => {
                       <div className="col-md-6 mb-4">
                         <SelectBox
                           selectClass="mainInput"
-                          name="book_category_id"
+                          name="CategoryId"
                           label="Select Book Category"
                           placeholder="Select Book Category"
                           
-                          value={formData.book_category_id}
-                          option={BookCategories}
+                          value={formData.CategoryId}
+                          option={categories}
                           onChange={handleChange}
                         />
                       </div>

@@ -49,7 +49,7 @@ export const CategoryManagement = () => {
   };
 
   const CategoryData = () => {
-    const url = `https://custom3.mystagingserver.site/julieanna-api/public/api/categories`;
+    const url = `https://custom3.mystagingserver.site:5010/api/category`;
     document.querySelector(".loaderBox").classList.remove("d-none");
     fetch(url, {
       method: "GET",
@@ -62,7 +62,7 @@ export const CategoryManagement = () => {
       .then((response) => response.json())
       .then((data) => {
         document.querySelector(".loaderBox").classList.add("d-none");
-        setData(data.data);
+        setData(data);
       })
       .catch((error) => {
         setData([]);
@@ -78,8 +78,7 @@ export const CategoryManagement = () => {
   const handleDelete = (categoryId) => {
     const LogoutData = localStorage.getItem("login");
     document.querySelector(".loaderBox").classList.remove("d-none");
-
-    const url = `https://custom3.mystagingserver.site/julieanna-api/public/api/category/${categoryId}`;
+    const url = `https://custom3.mystagingserver.site:5010/api/category?id=${categoryId}`;
     fetch(url, {
       method: "DELETE",
       headers: {
@@ -99,10 +98,8 @@ export const CategoryManagement = () => {
             success: true,
           });
           setShowModal(true);
-          setTimeout(() => {
-            setShowModal(false);
-            CategoryData();
-          }, 1500);
+          setShowModal(false);
+          CategoryData();
         } else {
           setFeedback({
             modalHeading: "Error",
@@ -122,7 +119,9 @@ export const CategoryManagement = () => {
           success: false,
         });
         setShowModal(true);
-      });
+      }).finally(  CategoryData());
+
+    
   };
 
   const handleSeriesAddEdit = async (e) => {
@@ -130,9 +129,10 @@ export const CategoryManagement = () => {
     try {
       document.querySelector(".loaderBox").classList.remove("d-none");
       await addcategory(currentFaq);
+      setShowModal(false);
       setCurrentFaq({ title: "", parts_count: "" });
       document.querySelector(".loaderBox").classList.add("d-none");
-
+      setEdit(false)
       setFeedback({
         modalHeading: "Success",
         feedbackModalHeading: edit ? "Category Updated" : "Category Added",
@@ -142,11 +142,8 @@ export const CategoryManagement = () => {
         success: true,
       });
 
-      setShowModal(true);
-      setTimeout(() => {
-        setShowModal(false);
-        CategoryData();
-      }, 1500);
+      
+      CategoryData();
     } catch (error) {
       console.error("Error adding/updating category:", error);
       setFeedback({
@@ -157,6 +154,7 @@ export const CategoryManagement = () => {
       });
       setShowModal(true);
     }
+    document.querySelector(".loaderBox").classList.add("d-none");
   };
 
   const handleEdit = (item) => {
@@ -166,9 +164,24 @@ export const CategoryManagement = () => {
       btnText: "Update",
       feedbackMessage: "",
     });
-    setCurrentFaq(item);
+    console.log('ddddddd',item);
+    
+    setCurrentFaq(item,);
     setEdit(true);
   };
+
+  const filehandleChange = (event, name) => {
+    const file = event.target.files[0];
+
+    if (file) {
+      const fileName = file;
+      setCurrentFaq((prevData) => ({
+        ...prevData,
+        [name]: fileName
+      }));
+    }
+  };
+console.log('aaaaaaa',data);
 
   return (
     <>
@@ -207,7 +220,7 @@ export const CategoryManagement = () => {
           </div>
           <div className="dashCard">
             <CategoryCard
-              data={data}
+              data={data.data}
               hanldeRoute={hanldeRoute}
               handleEdit={handleEdit}
               handleDelete={handleDelete}
@@ -235,9 +248,24 @@ export const CategoryManagement = () => {
               }
             />
           </div>
+          <div className="col-md-6 mb-4">
+                        <CustomInput
+                          label="Image"
+                          required
+                          id="Image"
+                          type="file"
+                          placeholder="Image"
+                          labelClass="mainLabel"
+                          inputClass="mainInput"
+                          name="image"
+                          
+                          onChange={(e) => filehandleChange(e, "image")}
+                        />
+                      </div>
+
           <CustomButton
             variant="primaryButton"
-            text={feedback.btnText}
+            text={'Submit'}
             className="me-2"
             type="submit"
             onClick={handleSeriesAddEdit}
