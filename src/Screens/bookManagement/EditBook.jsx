@@ -10,7 +10,7 @@ import { SelectBox } from "../../Components/CustomSelect";
 import AddBook from "./AddBook";
 import { getEntity } from "../../utils";
 import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css"; 
+import "react-quill/dist/quill.snow.css";
 export const EditBook = () => {
   const baseurl = process.env.REACT_APP_BASE_URL;
 
@@ -21,8 +21,14 @@ export const EditBook = () => {
     cover: "",
   });
   const [categories, setCategories] = useState([]);
- 
 
+  const [feedback, setFeedback] = useState({
+    modalHeading: "Add New Category",
+    feedbackModalHeading: "",
+    feedbackMessage: "",
+    success: false, // true for success modal, false for error modal
+    btnText: "Add",
+  });
   const handleChange = (event) => {
     const { name, value } = event.target;
     if (name == "availability") {
@@ -64,7 +70,7 @@ export const EditBook = () => {
   const getCategory = async () => {
     const resp = await getEntity("category");
     const formattedCategoriesData = resp.data.map((item) => ({
-      key: item.id,
+      id: item.id,
       name: item.title,
     }));
     setCategories(formattedCategoriesData);
@@ -88,15 +94,24 @@ export const EditBook = () => {
     document.querySelector(".loaderBox").classList.remove("d-none");
 
     try {
-      const response = await Addbook(formDataMethod);
-      console.log("resposne ", response);
+      const resp = await Addbook(formDataMethod, id);
 
-      if (response?.status === true) {
+      if (resp?.status) {
+        setFeedback({
+          modalHeading: "Success",
+          feedbackModalHeading:  "Category Updated" ,
+          feedbackMessage: resp.message,
+          success: resp.success,
+        });
         navigate("/book-management");
-      } else {
-        console.error("Failed to update book:", response);
-      }
+      } 
     } catch (error) {
+      setFeedback({
+        modalHeading: "Error",
+        feedbackModalHeading:  "Update Failed",
+        feedbackMessage: error.message,
+        success: error.success,
+      });
       console.error("Error in updating book:", error);
     } finally {
       document.querySelector(".loaderBox").classList.add("d-none");
@@ -149,7 +164,7 @@ export const EditBook = () => {
                       <div className="col-md-6 mb-4">
                         <CustomInput
                           label="Title"
-                          
+
                           id="jobID"
                           type="text"
                           placeholder="Enter Title"
@@ -192,8 +207,8 @@ export const EditBook = () => {
                           name="CategoryId"
                           label="Select Book Category"
                           placeholder="Select Book Category"
-                          
-                          value={formData.CategoryId}
+
+                          value={formData?.CategoryId}
                           option={categories}
                           onChange={handleChange}
                         />
@@ -243,22 +258,22 @@ export const EditBook = () => {
                       <div className="col-md-6 mb-4">
                         <CustomInput
                           label="Video Trailer"
-                          
+
                           id="resume"
                           type="file"
                           placeholder="video trailer"
                           labelClass="mainLabel"
                           inputClass="mainInput"
-                          name="video_trailer"
+                          name="video"
                           accept=".mp4,.mp3"
-                          onChange={(e) => filehandleChange(e, "video_trailer")}
+                          onChange={(e) => filehandleChange(e, "video")}
                         />
                       </div>
 
                       <div className="col-md-6 mb-4">
                         <CustomInput
                           label="Book Cover"
-                          
+
                           id="resume"
                           type="file"
                           placeholder="Book Cover"
@@ -376,15 +391,14 @@ export const EditBook = () => {
             </div>
           </div>
         </div>
-
         <CustomModal
           show={showModal}
-          close={() => {
-            setShowModal(false);
-          }}
-          success
-          heading="Book added Successfully."
-        />
+          close={() => setShowModal(false)}
+          success={feedback.success}
+          heading={feedback.feedbackMessage}
+        >
+        </CustomModal>
+
       </DashboardLayout>
     </>
   );

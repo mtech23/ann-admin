@@ -1,28 +1,13 @@
 import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-import { Dropdown } from "react-bootstrap";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faEllipsisV,
-  faEye,
-  faCheck,
-  faTimes,
-  faFilter,
-  faEdit,
-  faTrash,
-} from "@fortawesome/free-solid-svg-icons";
 
 import { DashboardLayout } from "../../Components/Layout/DashboardLayout";
-import CustomTable from "../../Components/CustomTable";
 import CustomModal from "../../Components/CustomModal";
 
-import CustomPagination from "../../Components/CustomPagination";
-import CustomInput from "../../Components/CustomInput";
 import CustomButton from "../../Components/CustomButton";
-import { Getbookslist, GetpolicyDelete, GetPolicieslist } from "../../api";
+import { Getbookslist, GetPolicieslist } from "../../api";
 
-import { ordersManagement } from "../../Config/Data";
 
 import "./style.css";
 import { PoliciesDetails } from "./PoliciesDetail";
@@ -39,7 +24,7 @@ export const PoliciesManagement = () => {
   const [reload, setReload] = useState(false);
 
   const [books, setBooklists] = useState([]);
-  const [policies, setPolicieslists] = useState([]);
+  const [policies, setPolicieslists] = useState();
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
@@ -50,7 +35,6 @@ export const PoliciesManagement = () => {
     navigate("/policies-management/add-policies");
   };
 
-  console.log("aschjhsajc ja j", policies[0]?.id)
   const booklist = async () => {
     document.querySelector(".loaderBox").classList.remove("d-none");
     try {
@@ -73,8 +57,8 @@ export const PoliciesManagement = () => {
       console.log("policy", response);
 
       document.querySelector(".loaderBox").classList.add("d-none");
-      setPolicieslists(response?.data);
-      setData(response?.data);
+      setPolicieslists(response);
+      setData(response);
     } catch (error) {
       console.error("Error in logging in:", error);
 
@@ -82,29 +66,7 @@ export const PoliciesManagement = () => {
     }
   };
 
-  const policydelete = async (id) => {
-    document.querySelector(".loaderBox").classList.remove("d-none");
-    try {
-      const response = await GetpolicyDelete(id);
-      console.log("response", response);
 
-      if (response?.status == true) {
-        document.querySelector(".loaderBox").classList.add("d-none");
-        // policiesList();
-      }
-    } catch (error) {
-      console.error("Error in logging in:", error);
-
-      // toastAlert(error, ALERT_TYPES.ERROR);
-    }
-  };
-
-  const handleclick = () => {
-    navigate("/profile-page");
-  };
-  // useEffect(() => {
-  //   booklist();
-  // }, []);
   useEffect(() => {
     policiesList();
   }, [reload]);
@@ -139,40 +101,6 @@ export const PoliciesManagement = () => {
     document.title = "Ann | Policy Management";
   }, []);
 
-  const policiesData = [
-    {
-      id: 1,
-      title: "Policies",
-      privacy_policy:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. ",
-      terms_conditions:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. ",
-    },
-    {
-      id: 2,
-      title: "Policies",
-      privacy_policy:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. ",
-      terms_conditions:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. ",
-    },
-  ];
-
-  const maleHeaders = [
-    {
-      key: "id",
-      title: "S.No",
-    },
-    {
-      key: "policies_title",
-      title: "Title",
-    },
-
-    {
-      key: "action  ",
-      title: "action  ",
-    },
-  ];
 
   console.log("currentItems", currentItems);
   console.log({ policies })
@@ -185,7 +113,7 @@ export const PoliciesManagement = () => {
               <div className="dashCard">
                 <div className="row mb-3 justify-content-between">
 
-                  {policies.length === 0 &&
+                  {policies &&
                     <div className="col-md-12 mb-2">
                       <div className="addUser">
                         <CustomButton
@@ -199,8 +127,8 @@ export const PoliciesManagement = () => {
                   }
 
                 </div>
-                {policies.length !== 0 &&
-                  <PoliciesDetails id={policies[0].id} reload={reload} setReload={setReload} />
+                {policies &&
+                  <PoliciesDetails  data={policies} id={policies.id} reload={reload} setReload={setReload} />
                 }
 
                 <div className="row mb-3">

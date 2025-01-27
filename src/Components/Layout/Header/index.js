@@ -31,7 +31,8 @@ export const Header = (props) => {
 
   const Continue = () => {
     setShowModal(false);
-    setShowModal2(true);
+    localStorage.clear();
+    navigate("/");
   };
 
   const handleClickPopup = () => {
@@ -73,16 +74,13 @@ export const Header = (props) => {
       const response = await userLogoutRequest();
 
       if (response && response.status == true) {
-        // toastAlert('Logged Out Successfully', ALERT_TYPES.SUCCESS);
         localStorage.removeItem("userToken");
         localStorage.removeItem("userrole");
         // dispatch(logoutRequest());
         navigate("/");
       } else {
-        // toastAlert(response.statusText, ALERT_TYPES.ERROR);
       }
     } catch (error) {
-      // toastAlert(error, ALERT_TYPES.ERROR);
     }
   };
 
@@ -91,7 +89,7 @@ export const Header = (props) => {
     const LogoutData = localStorage.getItem("login");
 
     document.querySelector(".loaderBox").classList.remove("d-none");
-    fetch(`${process.env.REACT_APP_BASE_URL}api/aboutAuthor`, {
+    fetch(`${process.env.REACT_APP_BASE_URL}profile`, {
       method: "GET",
       headers: {
         Accept: "application/json",
@@ -101,9 +99,9 @@ export const Header = (props) => {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data.data);
+        console.log(data.user);
         document.querySelector(".loaderBox").classList.add("d-none");
-        setUserNewData(data.data);
+        setUserNewData(data.user);
       })
       .catch((error) => {
         document.querySelector(".loaderBox").classList.add("d-none");
@@ -115,6 +113,8 @@ export const Header = (props) => {
     userprofile();
     setNotificationState(notifications);
   }, []);
+  const user = JSON.parse(localStorage.getItem('user'));
+  const userImg = `https://custom3.mystagingserver.site/ann-api${userNewData?.image || ''}`
 
   return (
     <header>
@@ -142,7 +142,7 @@ export const Header = (props) => {
                 >
                   <div className="userImage">
                     <img
-                      src={baseurl + userNewData?.image}
+                      src={userImg}
                       alt=""
                       className="img-fluid"
                     />

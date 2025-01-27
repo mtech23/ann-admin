@@ -20,24 +20,24 @@ const CustomPagination = ({
         Showing {showing} out of {totalItems} Entries
       </p>
       <ul>
-        <li onClick={() => onPageChange(currentPage > 1 ? currentPage - 1 : 1)}>
-          <button>Prev</button>
+        <li >
+          <button onClick={() => onPageChange(currentPage > 1 ? currentPage - 1 : 1)} disabled={currentPage > 1 ? false : true}>Prev</button>
         </li>
         {pageNumbers?.map((pageNumber) => (
           <li key={pageNumber}>
-            <button onClick={() => onPageChange(pageNumber)}>
+            <button className={`${pageNumber == currentPage ? 'current-page' : ""}`} onClick={() => onPageChange(pageNumber)}>
               {pageNumber}
             </button>
           </li>
         ))}
         <li
-          onClick={() =>
+
+        >
+          <button onClick={() =>
             onPageChange(
               currentPage < totalPages ? currentPage + 1 : totalPages
             )
-          }
-        >
-          <button>Next</button>
+          } disabled={currentPage < totalPages ? false : true} >Next</button>
         </li>
       </ul>
     </div>

@@ -32,6 +32,7 @@ const CustomInput = (props) => {
           accept={props?.accept}
           className={props?.inputClass} 
           onChange={props?.onChange} 
+          readOnly={props.readOnly}
           value={props.value} />
         }
       </div>

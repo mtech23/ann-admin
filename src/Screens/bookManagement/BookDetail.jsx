@@ -7,12 +7,7 @@ import CustomButton from "../../Components/CustomButton";
 import {
   GetBookdetail,
   Getchaptersdetailbyid,
-  DeleteChapter,
-  GetchaptersDelete,
-  Getpagedetail,
-  pageDelete,
   Addchapter,
-  Getchaptersbyid,
   addPages
 } from "../../api";
 import Accordion from "react-bootstrap/Accordion";
@@ -67,7 +62,7 @@ export const BookDetails = () => {
   const [pagealreadyexist, setpagealreadyexist] = useState("");
 
   const [formData, setFormData] = useState({
-    price: 0
+    bookId: id
   });
 
   const [data, setData] = useState({});
@@ -85,41 +80,15 @@ export const BookDetails = () => {
     try {
       const response = await GetBookdetail(id);
 
-      setBookdetail(response?.data);
+      setBookdetail(response?.book);
     } catch (error) {
       console.error("Error in logging in:", error);
     }
   };
 
-  const Getchapterssbyid = async (id) => {
-    try {
-      const response = await Getchaptersbyid(id);
-      // setEditModal(true)
+ 
 
-      setFormData(response?.data);
-    } catch (error) {
-      console.error("Error in logging in:", error);
-    }
-  };
 
-  const deleteChapter = async (id) => {
-    document.querySelector(".loaderBox").classList.add("d-none");
-
-    try {
-      const response = await DeleteChapter(id);
-      document.querySelector(".loaderBox").classList.add("d-none");
-
-      if (response?.status == true) {
-        document.querySelector(".loaderBox").classList.remove("d-none");
-        chapterData();
-      }
-    } catch (error) {
-      document.querySelector(".loaderBox").classList.remove("d-none");
-      console.error("Error in logging in:", error);
-
-      // toastAlert(error, ALERT_TYPES.ERROR);
-    }
-  };
 
   useEffect(() => {
     bookdetail();
@@ -173,33 +142,10 @@ export const BookDetails = () => {
     }
   };
 
-  const pagedelete = async (id) => {
-    document.querySelector(".loaderBox").classList.remove("d-none");
-    try {
-      const response = await pageDelete(id);
 
-      if (response?.status == true) {
-        document.querySelector(".loaderBox").classList.add("d-none");
-        chapterData();
-      }
-    } catch (error) {
-      console.error("Error in logging in:", error);
-    }
-  };
 
   const [Viewpage, setViewpage] = useState(false);
 
-  const viewpages = async (id) => {
-    try {
-      const response = await Getpagedetail(id);
-
-      setPagesadd(response?.data);
-    } catch (error) {
-      console.error("Error in logging in:", error);
-
-      // toastAlert(error, ALERT_TYPES.ERROR);
-    }
-  };
 
   const handleSubmitchapter = async (e) => {
     e.preventDefault();
@@ -209,27 +155,25 @@ export const BookDetails = () => {
     for (const key in formData) {
       formDataMethod.append(key, formData[key]);
     }
-    formDataMethod.append("book_id", id);
-
-    document.querySelector(".loaderBox").classList.remove("d-none");
-    // Make the fetch request
 
     try {
       const response = await Addchapter(formDataMethod);
       document.querySelector(".loaderBox").classList.remove("d-none");
 
-      if (response?.status == true) {
+      if (response?.success) {
         setShowModalChapter(true);
         chapterData();
         setEditModal(false);
         setIsChapter(!isChapter);
         setpagealreadyexist(" ");
-      } else if (response?.status == false) {
+      } else if (!response?.success) {
         document.querySelector(".loaderBox").classList.add("d-none");
         setpagealreadyexist(response?.message);
       } else {
         setpagealreadyexist(" ");
       }
+
+      bookdetail()
     } catch (error) {
       console.error("Error in adding model post:", error);
     }
@@ -313,7 +257,6 @@ export const BookDetails = () => {
     for (const key in formData) {
       formDataMethod.append(key, formData[key]);
     }
-    formDataMethod.append("book_id", id);
 
     document.querySelector(".loaderBox").classList.remove("d-none");
     // Make the fetch request
@@ -343,7 +286,17 @@ export const BookDetails = () => {
   useEffect(() => {
     chapterData();
   }, [id]);
+  const filehandleChange = (event, name) => {
+    const file = event.target.files[0];
 
+    if (file) {
+      const fileName = file;
+      setFormData((prevData) => ({
+        ...prevData,
+        pdf: fileName
+      }));
+    }
+  };
   return (
     <>
       <DashboardLayout>
@@ -361,61 +314,68 @@ export const BookDetails = () => {
               <div className="row">
                 <div className="col-md-6 mb-4">
                   <div className="productImage">
-                    <img src={base_url + Bookdetail?.cover} />
+                  <p className="secondaryText">Book Cover</p>
+                    <img src={'https://custom3.mystagingserver.site/ann-api' + Bookdetail?.cover} />
                   </div>
                 </div>
 
                 <div className="col-md-6 mb-4">
-                  <p className="secondaryText">Author Name</p>
-                  <p>{Bookdetail?.author}</p>
+                  <div className="productImage">
+                  <p className="secondaryText">Video</p>
+                    {Bookdetail?.video? (
+                      <div className="productVideo mt-3">
+                        <video
+                          controls
+                          style={{ width: '100%' }}
+                        >
+                          <source
+                            src={'https://custom3.mystagingserver.site/ann-api' + Bookdetail?.video}
+                            type="video/mp4"
+                          />
+                          Your browser does not support the video tag.
+                        </video>
+                      </div>
+                    ): <span>
+                      Video Not Available 
+                    </span> }
+                  </div>
                 </div>
+
+
                 <div className="col-md-6 mb-4">
                   <p className="secondaryText">Title</p>
                   <p>{Bookdetail?.title}</p>
                 </div>
                 <div className="col-md-6 mb-4">
-                  <p className="secondaryText">Title</p>
-                  <p>{Bookdetail?.title}</p>
+                  <p className="secondaryText">Category</p>
+                  <p>{Bookdetail?.category?.title}</p>
                 </div>
-                <div className="col-md-6 mb-4">
-                  <p className="secondaryText">Book Type</p>
-                  <p>{Bookdetail?.type}</p>
-                </div>
-                <div className="col-md-6 mb-4">
-                  <p className="secondaryText">Book Language</p>
-                  <p>{Bookdetail?.lang}</p>
-                </div>
-                <div className="col-md-6 mb-4">
-                  <p className="secondaryText">Book Pages</p>
-                  <p>{Bookdetail?.pages}</p>
-                </div>
-                <div className="col-md-6 mb-4">
-                  <p className="secondaryText">Audiobook Duration</p>
-                  <p>
-                    {!Bookdetail?.audiobook_duration ||
-                    Bookdetail?.audiobook_duration === "null"
-                      ? "Not available"
-                      : Bookdetail?.audiobook_duration}
-                  </p>
-                </div>
+
+
+
                 <div className="col-md-6 mb-4">
                   <p className="secondaryText">Book Rating</p>
                   <p>
-                    {Bookdetail?.rating == null
-                      ? "No Rating"
-                      : Bookdetail?.rating}
+                    {Bookdetail?.averageRating}
+                  </p>
+                </div>
+
+                <div className="col-md-6 mb-4">
+                  <p className="secondaryText">Book Reviews</p>
+                  <p>
+                    {Bookdetail?.totalReviews}
                   </p>
                 </div>
                 <div className="col-md-6 mb-4">
                   <p className="secondaryText">Description</p>
-                  <p>{Bookdetail?.description}</p>
+                  <p dangerouslySetInnerHTML={{ __html: Bookdetail.description }}></p>
                 </div>
               </div>
 
               <div className="row">
                 <div className="col-md-12">
                   <div className="d-flex justify-content-between">
-                    <h2 className="mainTitle mb-4">Book Chapters</h2>
+                    <h2 className="mainTitle mb-4">Book Chapter</h2>
                     <div className="addChapter">
                       <CustomButton
                         text="Add Chapter"
@@ -429,154 +389,45 @@ export const BookDetails = () => {
                 </div>
                 <div className="col-md-12">
                   <Accordion defaultActiveKey="0">
-                    {chapterdata &&
-                      chapterdata?.map((item, index) => (
-                        <Accordion.Item eventKey={index}>
-                          <Accordion.Header>{`Chapter ${
-                            index + 1
-                          }`}</Accordion.Header>
-                          <Accordion.Body>
-                            <div className="chapeditz d-flex">
-                              <span className=" d-flex">
-                                <h4 className="chaptertitle text-capitalize ">
-                                  Chapter No :
-                                </h4>
-                                <p className="chaptitle">
-                                  {" "}
-                                  {item?.chapter_number}
-                                </p>
-                              </span>
+                    <Accordion.Item eventKey={"index"}>
+                      <Accordion.Header>{`Chapter`}</Accordion.Header>
+                      <Accordion.Body>
+                        <div className="chapeditz d-flex">
+                          {Bookdetail?.chapter?.pdf ? (
+                            <>
+                              {/* Display PDF Link */}
+                              <a
+                                href={'https://custom3.mystagingserver.site/ann-api' + Bookdetail.chapter.pdf}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="btn btn-primary me-3"
+                              >
+                                View PDF
+                              </a>
 
-                              <p className=" gap-2">
-                                <span>
-                                  <Link
-                                    onClick={() => {
-                                      setEditModal(true);
-                                      Getchapterssbyid(item?.chapter_id);
-                                    }}
-                                    className="chaptableAction"
-                                  >
-                                    <FontAwesomeIcon
-                                      icon={faEdit}
-                                      className="chaptableActionIcon"
-                                    />
-                                    Edit
-                                  </Link>
-                                </span>
-                                <span className="deletechap  me-2">
-                                  <button
-                                    type="button"
-                                    className="bg-transparent border-0   "
-                                    onClick={() => {
-                                      deleteChapter(item?.chapter_id);
-                                    }}
-                                  >
-                                    <FontAwesomeIcon
-                                      icon={faTrash}
-                                    ></FontAwesomeIcon>{" "}
-                                    Delete
-                                  </button>
-                                </span>
-                                <div className="addChapter  mt-2 ">
-                                  <CustomButton
-                                    text="Add Page"
-                                    variant="primaryButton"
-                                    onClick={() => {
-                                      setchapterpageid(item?.chapter_id);
-                                      setAddpage(true);
-                                    }}
-                                  ></CustomButton>
-                                </div>
-                              </p>
-                            </div>
+                              {/* Download PDF Button */}
+                              <a
+                                href={'https://custom3.mystagingserver.site/ann-api' + Bookdetail.chapter.pdf}
+                                download
+                                className="btn btn-secondary"
+                              >
+                                Download PDF
+                              </a>
+                            </>
+                          ) : (
+                            <p>No chapter PDF available.</p>
+                          )}
+                        </div>
 
-                            <span className="chaptitiletop d-flex">
-                              <h4 className="chaptertitle text-capitalize ">
-                                Title :
-                              </h4>
-                              <p className="chaptitle"> {item?.title}</p>
-                            </span>
 
-                            {/* <h3 className="text-capitalize">{item?.price}</h3> */}
-                            {item?.status == "free" ? "" : <div> </div>}
 
-                            {item?.audio_file == null ? (
-                              " "
-                            ) : (
-                              <span className=" d-flex">
-                                <h4 className="chaptertitle text-capitalize ">
-                                  Audio File :
-                                </h4>
-                                {/* <p className="chaptitle">{item?.audio_file}</p> */}
-                                {item?.audio_file && (
-                                  <audio controls className="audiocontroll">
-                                    <source
-                                      src={base_url + item?.audio_file}
-                                      type="audio/mpeg"
-                                    />
-                                    Your browser does not support the audio
-                                    element.
-                                  </audio>
-                                )}
-                              </span>
-                            )}
 
-                            {item?.pages?.map((page, index) => (
-                              //  <p> {`Page ${index + 1}`}</p>
-                              <div className="   d-flex justify-content-between ">
-                                {" "}
-                                {`Page ${page?.page_number}`}
-                                <p className=" gap-3    d-flex">
-                                  <Link
-                                    onClick={() => {
-                                      setEditpage(true);
 
-                                      setchapterpageid(item?.chapter_id);
-                                      viewpages(page?.id);
-                                      // editDetailData(item?.id)
-                                    }}
-                                    className="chaptableAction"
-                                  >
-                                    {" "}
-                                    <FontAwesomeIcon
-                                      icon={faEdit}
-                                      className="chaptableActionIcon"
-                                    />{" "}
-                                    Edit
-                                  </Link>
-                                  <Link
-                                    onClick={() => {
-                                      setViewpage(true);
-                                      setchapterpageid(item?.chapter_id);
-                                      viewpages(page?.id);
-                                    }}
-                                    className="chaptableAction"
-                                  >
-                                    <FontAwesomeIcon
-                                      icon={faEye}
-                                      className="tableActionIcon"
-                                    />
-                                    View
-                                  </Link>
-                                  <button
-                                    type="button"
-                                    className="bg-transparent border-0  "
-                                    onClick={() => {
-                                      pagedelete(page?.id);
-                                    }}
-                                  >
-                                    <FontAwesomeIcon
-                                      icon={faTrash}
-                                    ></FontAwesomeIcon>{" "}
-                                    Delete
-                                  </button>
-                                </p>
-                              </div>
-                            ))}
-                            {/* <p> {item?.pages}</p> */}
-                          </Accordion.Body>
-                        </Accordion.Item>
-                      ))}
+
+
+                        {/* <p> {item?.pages}</p> */}
+                      </Accordion.Body>
+                    </Accordion.Item>
                   </Accordion>
                 </div>
                 {isChapter && (
@@ -587,88 +438,21 @@ export const BookDetails = () => {
                       </div>
                       <div className="ChapterForm col-md-6 mb-4">
                         <CustomInput
-                          label="Chapter Title"
+                          label="Chapter pdf"
                           required
-                          id="title"
-                          type="text"
-                          placeholder="Enter Chapter Title"
+                          id="pdf"
+                          type="file"
+                          accept=".pdf"
+                          placeholder="Enter Chapter pdf"
                           labelClass="mainLabel"
                           inputClass="mainInput"
-                          name="title"
-                          value={formData?.title}
-                          onChange={handleChange}
+                          name="pdf"
+                          // value={formData?.pdf}
+                          onChange={filehandleChange}
                         />
                       </div>
 
-                      <div className="ChapterForm col-md-6 mb-4">
-                        <CustomInput
-                          label="Chapter No"
-                          required
-                          id="title"
-                          type="number"
-                          placeholder="Enter Chapter Number"
-                          labelClass="mainLabel"
-                          inputClass="mainInput"
-                          name="chapter_number"
-                          value={formData?.chapter_number}
-                          onChange={handleChange}
-                        />
-                      </div>
-                      <p className="pagecss">{pagealreadyexist}</p>
 
-                      {Bookdetail?.type == "eBook" ? (
-                        " "
-                      ) : (
-                        <div className="ChapterForm col-md-6 mb-4">
-                          <CustomInput
-                            label="Chapter Audio"
-                            required
-                            id="audio_file"
-                            type="file"
-                            placeholder="Upload Chapter Audio"
-                            labelClass="mainLabel"
-                            inputClass="mainInput"
-                            name="audio_file"
-                            accept=".mp4,.mp3"
-                            onChange={handlechapterfile}
-                          />
-                        </div>
-                      )}
-                   
-
-                      <div className="ChapterForm col-md-6 mb-4">
-                        {shapterstatus === "paid" && (
-                          <CustomInput
-                            label="Chapter price"
-                            required
-                            id="title"
-                            type="text"
-                            placeholder="Enter Chapter price"
-                            labelClass="mainLabel"
-                            inputClass="mainInput"
-                            name="price"
-                            value={formData?.price}
-                            onChange={handleChange}
-                          />
-                        )}
-                      </div>
-
-                      <div className="ChapterForm col-md-6 mb-4">
-                        {shapterstatus === "paid" && (
-                          <CustomInput
-                            label="Chapter Purchase Points"
-                            required
-                            id="title"
-                            type="text"
-                            placeholder="Enter Chapter purchase points"
-                            labelClass="mainLabel"
-                            inputClass="mainInput"
-                            name="purchase_points"
-                            value={formData?.purchase_points}
-                            onChange={handleChange}
-                          />
-                        )}
-                      </div>
 
                       <div className="addNewChapter">
                         <CustomButton
@@ -771,7 +555,7 @@ export const BookDetails = () => {
             </div>
           )}
 
-       
+
 
           {formData?.status === "paid" && (
             <CustomInput

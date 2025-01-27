@@ -13,12 +13,12 @@ import CustomPagination from "../../Components/CustomPagination";
 import CustomInput from "../../Components/CustomInput";
 import {
   Getbookslist,
-  GetbooksDelete,
   GetUserlist,
   suspendUser,
 } from "../../api";
 
 import "./style.css";
+import CustomButton from "../../Components/CustomButton";
 
 export const UsersManagement = () => {
   const base_url = process.env.REACT_APP_BASE_URL;
@@ -66,8 +66,8 @@ export const UsersManagement = () => {
       console.log("response", response);
 
       document.querySelector(".loaderBox").classList.add("d-none");
-      setOrderslists(response?.data);
-      setData(response?.data);
+      setOrderslists(response?.user);
+      setData(response?.user);
     } catch (error) {
       console.error("Error in logging in:", error);
 
@@ -75,33 +75,14 @@ export const UsersManagement = () => {
     }
   };
 
-  const bookdelete = async (id) => {
-    document.querySelector(".loaderBox").classList.remove("d-none");
-    try {
-      const response = await GetbooksDelete(id);
-      console.log("response", response);
 
-      if (response?.status == true) {
-        document.querySelector(".loaderBox").classList.add("d-none");
-        booklist();
-      }
-    } catch (error) {
-      console.error("Error in logging in:", error);
 
-      // toastAlert(error, ALERT_TYPES.ERROR);
-    }
-  };
 
-  const handleclick = () => {
-    navigate("/profile-page");
-  };
 
   useEffect(() => {
     orderlist();
   }, []);
 
-  console.log("books", books);
-  console.log("orders", orders);
 
   const inActive = () => {
     setShowModal(false);
@@ -116,36 +97,10 @@ export const UsersManagement = () => {
     setInputValue(e.target.value);
   };
 
-  const filterData = books?.filter((item) =>
-    item?.title.toLowerCase().includes(inputValue.toLowerCase())
-  );
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = orders?.slice(indexOfFirstItem, indexOfLastItem);
-  console.log("currentItems", currentItems);
-
-  // const ordersManagement = [
-  //   {
-  //     id: 1,
-  //     title: "Title",
-  //     date: "12-12-2023",
-  //     content: "Lorem ipsum doller 10",
-  //     isPinned: "true",
-  //   },
-  // ];
-
-  // const fetchOrderData = async () => {
-  //   try {
-  //     const response = await fetch(`${url}orders`);
-  //     const jsonData = await response.json();
-  //     setData(jsonData);
-  //   } catch (error) {
-  //     console.error("Error fetching data:", error);
-  //   }
-  // };
-
-  // console.log("Fetch Order data", fetchOrderData);
 
   useEffect(() => {
     document.title = "Ann | Order Management";
@@ -170,22 +125,22 @@ export const UsersManagement = () => {
       key: "Email",
       title: "Email",
     },
-    {
-      key: "Active subscription",
-      title: "Active subscription",
-    },
+
     {
       key: "status",
       title: "status",
+    },
+    {
+      key: "Action",
+      title: "Action",
     },
   ];
 
   console.log("currentItems", currentItems);
 
-  const handleUserStatusChange = async (id) => {
-    setOpenDropdownId(null);
+  const handleUserStatusChange = async ({ id, active }) => {
     try {
-      const resp = await suspendUser(id);
+      const resp = await suspendUser(id, !active);
 
       console.log("response", resp);
     } catch (error) {
@@ -227,89 +182,35 @@ export const UsersManagement = () => {
                     <CustomTable headers={maleHeaders}>
                       <tbody>
                         {/* {currentItems?.map((item, index) => ( */}
-                        {currentItems?.map((item, index) => (
+                        {data?.map((item, index) => (
                           <tr key={index}>
-                            <td>{item?.name}</td>
+                            <td>{item?.id}</td>
                             <td>
                               {" "}
                               <img
-                                src={base_url + item.image}
+                                src={'https://custom3.mystagingserver.site/ann-api' + item.image}
                                 width={50}
                                 height={50}
                                 className="rounded-3"
                               />{" "}
                             </td>
-                            <td>{item?.name}</td>
+                            <td>{item?.username}</td>
                             <td>{item?.email}</td>
-                            <td>{"subs name"}</td>
+
+                            <td className={item.active == 1 ? 'greenColor' : "redColor"}>{item.active == 1 ? 'Active' : "Inactive"}</td>
+
+
                             <td>
-                              {" "}
-                              <div className="d-flex justify-content-center align-items-center ">
-                                <span>{item?.status}</span>
-                                <Dropdown
-                                  className="tableDropdown"
-                                  show={openDropdownId === item.id}
-                                  onToggle={() => toggleDropdown(item.id)}
-                                >
-                                  <Dropdown.Toggle
-                                    variant="transparent"
-                                    className="notButton classicToggle"
-                                  >
-                                    <FontAwesomeIcon icon={faEllipsisV} />
-                                  </Dropdown.Toggle>
-                                  <Dropdown.Menu
-                                    align="end"
-                                    className="tableDropdownMenu"
-                                  >
-                                    <Link
-                                      onClick={() =>
-                                        handleUserStatusChange(item.id)
-                                      }
-                                      // to={`/orders-management/order-details/${item?.id}`}
-
-                                      className="tableAction"
-                                    >
-                                      {item?.status == "Active"
-                                        ? "suspend"
-                                        : "activate "}
-                                    </Link>
-
-                                    {/* <Link
-                                    to={`/orders-management/edit-order/${item?.id}`}
-                                    className="tableAction"F
-                                  >
-                                    <FontAwesomeIcon
-                                      icon={faEdit}
-                                      className="tableActionIcon"
-                                    />
-                                    Edit
-                                  </Link>
-
-                                  <button
-                                    type="button"
-                                    className="bg-transparent border-0 ps-lg-3 pt-1"
-                                    onClick={() => {
-                                      bookdelete(item?.id);
-                                    }}
-                                  >
-                                    <FontAwesomeIcon
-                                      icon={faTrash}
-                                    ></FontAwesomeIcon>{" "}
-                                    Delete
-                                  </button> */}
-                                  </Dropdown.Menu>
-                                </Dropdown>
-                              </div>{" "}
+                              {item.active == 1 ? <CustomButton
+                                text="Deactivate"
+                                variant="primaryButton"
+                                onClick={() => handleUserStatusChange(item)}
+                              /> : <CustomButton
+                                text="Activate"
+                                variant="primaryButton"
+                                onClick={() => handleUserStatusChange(item)}
+                              />}
                             </td>
-
-                            {/* <td>{item?.title} </td> */}
-                            {/* <td className="text-capitalize">{item?.title}</td> */}
-                            {/* <td>{item?.pages ? `$ ${item?.pages}` : `$0`}</td> */}
-                            {/* <td>{item?.country}</td>
-                            <td>{item?.created_at}</td>
-                            <td>{item?.content}</td>
-                            <td>{item?.isPinned}</td> */}
-
                             {/* <td>{item?.audiobook_duration}</td> */}
                             {/* <td className={item.status == 1 ? 'greenColor' : "redColor"}>{item.status == 1 ? 'Active' : "Inactive"}</td> */}
                           </tr>

@@ -19,7 +19,7 @@ const Profile = () => {
     const LogoutData = localStorage.getItem("login");
 
     document.querySelector(".loaderBox").classList.remove("d-none");
-    fetch(`${process.env.REACT_APP_BASE_URL}api/aboutAuthor`, {
+    fetch(`${process.env.REACT_APP_BASE_URL}profile`, {
       method: "GET",
       headers: {
         Accept: "application/json",
@@ -31,7 +31,7 @@ const Profile = () => {
       .then((data) => {
         console.log(data.data);
         document.querySelector(".loaderBox").classList.add("d-none");
-        setUserData(data.data);
+        setUserData(data.user);
       })
       .catch((error) => {
         document.querySelector(".loaderBox").classList.add("d-none");
@@ -44,6 +44,7 @@ const Profile = () => {
     userprofile();
     // setUserData(currentUser);
   }, []);
+  console.log('ddddddddddddd', userData);
 
   return (
     <>
@@ -60,7 +61,7 @@ const Profile = () => {
                 <div className="row mb-3">
                   <div className="col-lg-4 order-2 order-lg-1 mb-3">
                     <div className="profileImage">
-                      <img src={baseurl + userData?.image} alt="User" />
+                      <img src={'https://custom3.mystagingserver.site/ann-api' + userData?.image} alt="User" />
                     </div>
                   </div>
                 </div>
@@ -68,22 +69,17 @@ const Profile = () => {
                   <div className="col-lg-12">
                     <div className="row mb-4">
                       <div className="col-lg-3 mb-3">
-                        <h4 className="secondaryLabel">Full Name</h4>
+                        <h4 className="secondaryLabel">Name</h4>
                         <p className="secondaryText">{userData.name}</p>
                       </div>
                       <div className="col-lg-9 mb-3">
-                        <h4 className="secondaryLabel">Discripction</h4>
-                        <p
-                          className="secondaryText"
-                          dangerouslySetInnerHTML={{
-                            __html: userData.description,
-                          }}
-                        ></p>
+                        <h4 className="secondaryLabel">Email</h4>
+                        <p>{userData.email}</p>
 
                       </div>
                       <div className="col-lg-6 mb-3">
-                        <h4 className="secondaryLabel">Email</h4>
-                        <p className="secondaryText">{userData.email}</p>
+                        <h4 className="secondaryLabel">Phone No</h4>
+                        <p className="secondaryText">{userData.phoneNo || "N/A"}</p>
                       </div>
                     </div>
                   </div>

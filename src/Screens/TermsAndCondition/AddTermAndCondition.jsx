@@ -20,7 +20,8 @@ export const AddTermsAndCondition = () => {
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
   const [formData, setFormData] = useState({
-    description: "", // Initialize description field
+    content: "", // Initialize content field
+    type:"terms"
   });
 
   const Booktype = [
@@ -42,10 +43,10 @@ export const AddTermsAndCondition = () => {
     }));
   };
 
-  const handleDescriptionChange = (value) => {
+  const handlecontentChange = (value) => {
     setFormData((prevData) => ({
       ...prevData,
-      description: value
+      content: value
     }));
   };
 
@@ -73,7 +74,7 @@ export const AddTermsAndCondition = () => {
 
     try {
       const response = await Addpolicy(formDataMethod);
-      if (response?.status === true) {
+      if (true) {
         navigate("/terms-condition-management");
       }
     } catch (error) {
@@ -121,10 +122,10 @@ export const AddTermsAndCondition = () => {
                       <div className="col-md-12 mb-4">
                         <div className="inputWrapper">
                           <div className="form-controls">
-                            <label htmlFor="">Description</label>
+                            <label htmlFor="">content</label>
                             <ReactQuill
-                              value={formData.description}
-                              onChange={handleDescriptionChange}
+                              value={formData.content}
+                              onChange={handlecontentChange}
                               modules={{
                                 toolbar: [
                                   [{ 'header': '1' }, { 'header': '2' }],

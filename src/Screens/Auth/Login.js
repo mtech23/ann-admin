@@ -10,12 +10,18 @@ import CustomInput from "../../Components/CustomInput";
 const AdminLogin = () => {
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const login = localStorage.getItem('login');
+    if (login) {
+      navigate('/dashboard');
+    }
+  }, [navigate]);
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
 
-  console.log(formData.password);
 
   useEffect(() => {
     document.title = "Ann | Login";
@@ -43,6 +49,7 @@ const AdminLogin = () => {
         const responseData = await response.json();
         console.log("responseData", responseData);
         localStorage.setItem("login", responseData.token);
+        localStorage.setItem("user", JSON.stringify(responseData.user));
         console.log("Login Response:", responseData);
         document.querySelector(".loaderBox").classList.add("d-none");
         navigate("/dashboard");

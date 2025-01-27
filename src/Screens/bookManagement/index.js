@@ -27,18 +27,22 @@ export const BookManagement = () => {
   console.log("dddddd", id);
 
   const [data, setData] = useState([]);
+  const [totalItems, settotalItems] = useState()
   const [showModal, setShowModal] = useState(false);
   const [showModal2, setShowModal2] = useState(false);
   const [showModal3, setShowModal3] = useState(false);
   const [showModal4, setShowModal4] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(8);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
   const [inputValue, setInputValue] = useState("");
   const [dropdown, setdropdown] = useState(0);
 
   const [books, setBooklists] = useState([]);
   const handlePageChange = (pageNumber) => {
+    console.log('sssssss', pageNumber);
+
     setCurrentPage(pageNumber);
+    booklist(null, pageNumber);
   };
 
   const navigate = useNavigate();
@@ -46,15 +50,17 @@ export const BookManagement = () => {
     navigate("/book-management/add-book");
   };
 
-  const booklist = async () => {
+  const booklist = async (search, page) => {
     document.querySelector(".loaderBox").classList.remove("d-none");
     try {
-      const response = await Getbookslist();
-      console.log('aaaaaaaaaaa',response);
-      
+      const response = await Getbookslist(search, page);
+      console.log('aaaaaaaaaaa', response);
+
       document.querySelector(".loaderBox").classList.add("d-none");
+      settotalItems(response.totalBooks)
+      setCurrentPage(response.currentPage)
       setBooklists(response?.data || []);
-      setData(response?.data||[]);
+      setData(response?.data || []);
     } catch (error) {
       console.error("Error in fetching books:", error);
     }
@@ -64,18 +70,23 @@ export const BookManagement = () => {
     document.querySelector(".loaderBox").classList.remove("d-none");
     try {
       const response = await GetbooksDelete(id);
-      if (response?.status === true) {
-        document.querySelector(".loaderBox").classList.add("d-none");
-        booklist();
-      }
+
+      document.querySelector(".loaderBox").classList.add("d-none");
+      booklist();
+
     } catch (error) {
       console.error("Error in deleting book:", error);
     }
   };
 
   useEffect(() => {
-    booklist();
-  }, []);
+    if (inputValue) {
+      booklist(inputValue);
+    }
+    else if (inputValue == '') {
+      booklist(null);
+    }
+  }, [inputValue]);
 
   const handleChange = (e) => {
     setInputValue(e.target.value);
@@ -107,20 +118,10 @@ export const BookManagement = () => {
     { key: "Cover", title: "Cover" },
     { key: "Title", title: "Title" },
     { key: "category", title: "category" },
-  
+
     { key: "action", title: "Action" },
   ];
-  const togglePin = async (id) => {
-    setdropdown(0);
-    document.querySelector(".loaderBox").classList.remove("d-none");
 
-    const resp = await handlePin(id);
-
-    if (resp.status) {
-      booklist();
-    }
-    console.log("respresp");
-  };
 
   console.log("filterData", currentItems);
   return (
@@ -166,13 +167,13 @@ export const BookManagement = () => {
                   <div className="col-12">
                     <CustomTable headers={maleHeaders}>
                       <tbody>
-                        {currentItems?.map((item, index) => (
+                        {data?.map((item, index) => (
                           <tr key={index}>
-                            <td>{index + 1}</td>
-                            <td><img src={item.cover} class="avatarIcon  rounded-3 ml-5" width="10px" height="10px"/></td>
+                            <td>{item.id}</td>
+                            <td><img src={`https://custom3.mystagingserver.site/ann-api/${item.cover}`} class="avatarIcon  rounded-3 ml-5" width="10px" height="10px" /></td>
                             <td className="text-capitalize">{item?.title}</td>
-                            <td>{item?.CategoryId || "N/A"}</td>
-                            
+                            <td>{item?.category?.title || "N/A"}</td>
+
                             <td>
                               <Dropdown
                                 className="tableDropdown"
@@ -191,19 +192,6 @@ export const BookManagement = () => {
                                   align="end"
                                   className="tableDropdownMenu"
                                 >
-                                  {
-                                    <Link
-                                      className="tableAction"
-                                      onClick={() => togglePin(item.id)}
-                                    >
-                                      <FontAwesomeIcon
-                                        icon={faThumbtack}
-                                        className="tableActionIcon"
-                                      />
-                                      {item.pin == 1 ? "unPin" : "pin"}
-                                    </Link>
-                                  }
-
                                   <Link
                                     to={`/book-management/book-details/${item?.id}`}
                                     className="tableAction"
@@ -228,16 +216,16 @@ export const BookManagement = () => {
                                     onClick={() => {
                                       bookdelete(item?.id);
                                     }}
-                                   
+
                                     className="tableAction"
                                   >
                                     <FontAwesomeIcon
-                                      icon={faEdit}
+                                      icon={faTrash}
                                       className="tableActionIcon"
                                     />
                                     Delete
                                   </Link>
-                           
+
                                 </Dropdown.Menu>
                               </Dropdown>
                             </td>
@@ -245,13 +233,13 @@ export const BookManagement = () => {
                         ))}
                       </tbody>
                     </CustomTable>
-                    <CustomPagination
-                      showing={currentItems.length}
+                    {!inputValue && <CustomPagination
+                      showing={data.length}
                       itemsPerPage={itemsPerPage}
-                      totalItems={filterData.length} // Use the length of the filtered data
+                      totalItems={totalItems}
                       currentPage={currentPage}
                       onPageChange={handlePageChange}
-                    />
+                    />}
                   </div>
                 </div>
               </div>

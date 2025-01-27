@@ -10,7 +10,7 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
 export const AddPolicies = () => {
-  const [formData, setFormData] = useState({});
+  const [formData, setFormData] = useState({type:"privacy"});
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
 
@@ -25,19 +25,11 @@ export const AddPolicies = () => {
   const handleQuillChange = (value) => {
     setFormData((prevData) => ({
       ...prevData,
-      description: value,
+      content: value,
     }));
   };
 
-  const filehandleChange = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      setFormData((prevData) => ({
-        ...prevData,
-        cover: file,
-      }));
-    }
-  };
+
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -50,7 +42,7 @@ export const AddPolicies = () => {
 
     try {
       const response = await Addpolicy(formDataMethod);
-      if (response?.status === true) {
+      if (true) {
         navigate("/policies-management");
       } else {
         document.querySelector(".loaderBox").classList.remove("d-none");
@@ -104,12 +96,12 @@ export const AddPolicies = () => {
                       <div className="col-md-12  mb-4">
                         <div className="inputWrapper">
                           <div className="form-controls">
-                            <label htmlFor="description">Description</label>
+                            <label htmlFor="content">Content</label>
                             <ReactQuill
-                              value={formData?.description}
+                              value={formData?.content}
                               onChange={handleQuillChange}
                               className="form-control shadow border-0"
-                              id="description"
+                              id="content"
                             />
                           </div>
                         </div>

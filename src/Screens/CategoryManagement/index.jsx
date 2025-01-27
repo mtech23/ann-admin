@@ -12,7 +12,7 @@ export const CategoryManagement = () => {
     modalHeading: "Add New Category",
     feedbackModalHeading: "",
     feedbackMessage: "",
-    success: true, // true for success modal, false for error modal
+    success: false, // true for success modal, false for error modal
     btnText: "Add",
   });
 
@@ -75,11 +75,11 @@ export const CategoryManagement = () => {
     CategoryData();
   }, [location.pathname]);
 
-  const handleDelete = (categoryId) => {
+  const handleDelete = async (categoryId) => {
     const LogoutData = localStorage.getItem("login");
     document.querySelector(".loaderBox").classList.remove("d-none");
     const url = `https://custom3.mystagingserver.site:5010/api/category?id=${categoryId}`;
-    fetch(url, {
+    await fetch(url, {
       method: "DELETE",
       headers: {
         Accept: "application/json",
@@ -88,26 +88,17 @@ export const CategoryManagement = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        document.querySelector(".loaderBox").classList.add("d-none");
 
-        if (data.status) {
+
+        if (data.success) {
           setFeedback({
             modalHeading: "Success",
             feedbackModalHeading: "Category Deleted Successfully",
-            feedbackMessage: "The category has been removed successfully.",
+            feedbackMessage: data.message,
             success: true,
           });
           setShowModal(true);
-          setShowModal(false);
-          CategoryData();
-        } else {
-          setFeedback({
-            modalHeading: "Error",
-            feedbackModalHeading: "Category Deletion Failed",
-            feedbackMessage: "Failed to delete the category. Please try again.",
-            success: false,
-          });
-          setShowModal(true);
+
         }
       })
       .catch((error) => {
@@ -115,42 +106,42 @@ export const CategoryManagement = () => {
         setFeedback({
           modalHeading: "Error",
           feedbackModalHeading: "Error",
-          feedbackMessage: "Something went wrong. Please try again.",
-          success: false,
+          feedbackMessage: error.message,
+          success: error.success,
         });
         setShowModal(true);
-      }).finally(  CategoryData());
+      }).finally(CategoryData());
+    CategoryData()
 
-    
   };
 
   const handleSeriesAddEdit = async (e) => {
+    setEdit(false)
     e.preventDefault();
     try {
       document.querySelector(".loaderBox").classList.remove("d-none");
-      await addcategory(currentFaq);
-      setShowModal(false);
+      const resp = await addcategory(currentFaq);
+
+      CategoryData()
+
+      setShowModal(resp.message);
       setCurrentFaq({ title: "", parts_count: "" });
-      document.querySelector(".loaderBox").classList.add("d-none");
       setEdit(false)
       setFeedback({
         modalHeading: "Success",
         feedbackModalHeading: edit ? "Category Updated" : "Category Added",
-        feedbackMessage: edit
-          ? "The category has been updated successfully."
-          : "A new category has been added successfully.",
-        success: true,
+        feedbackMessage: resp.message,
+        success: resp.success,
       });
 
-      
-      CategoryData();
+
     } catch (error) {
       console.error("Error adding/updating category:", error);
       setFeedback({
         modalHeading: "Error",
         feedbackModalHeading: edit ? "Update Failed" : "Addition Failed",
-        feedbackMessage: "An error occurred. Please try again.",
-        success: false,
+        feedbackMessage: error.message,
+        success: error.success,
       });
       setShowModal(true);
     }
@@ -164,9 +155,9 @@ export const CategoryManagement = () => {
       btnText: "Update",
       feedbackMessage: "",
     });
-    console.log('ddddddd',item);
-    
-    setCurrentFaq(item,);
+    console.log('ddddddd', item);
+
+    setCurrentFaq(item);
     setEdit(true);
   };
 
@@ -181,7 +172,7 @@ export const CategoryManagement = () => {
       }));
     }
   };
-console.log('aaaaaaa',data);
+  console.log('aaaaaaa', data);
 
   return (
     <>
@@ -249,19 +240,18 @@ console.log('aaaaaaa',data);
             />
           </div>
           <div className="col-md-6 mb-4">
-                        <CustomInput
-                          label="Image"
-                          required
-                          id="Image"
-                          type="file"
-                          placeholder="Image"
-                          labelClass="mainLabel"
-                          inputClass="mainInput"
-                          name="image"
-                          
-                          onChange={(e) => filehandleChange(e, "image")}
-                        />
-                      </div>
+            <CustomInput
+              label="Image"
+              id="Image"
+              type="file"
+              placeholder="Image"
+              labelClass="mainLabel"
+              inputClass="mainInput"
+              name="image"
+
+              onChange={(e) => filehandleChange(e, "image")}
+            />
+          </div>
 
           <CustomButton
             variant="primaryButton"
@@ -271,13 +261,13 @@ console.log('aaaaaaa',data);
             onClick={handleSeriesAddEdit}
           />
         </CustomModal>
-        {/* <CustomModal
+        <CustomModal
           show={showModal}
           close={() => setShowModal(false)}
           success={feedback.success}
           heading={feedback.feedbackMessage}
         >
-        </CustomModal> */}
+        </CustomModal>
       </DashboardLayout>
     </>
   );

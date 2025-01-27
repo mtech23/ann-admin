@@ -51,8 +51,8 @@ const CustomModal = (props) => {
                 text={props?.btnTxt ? props?.btnTxt : "Ok"}
               />
             ) : (
-              <>
-                <CustomButton
+             <>
+               <CustomButton
                   onClick={props?.action}
                   variant="primaryButton"
                   text="Yes"
@@ -62,8 +62,8 @@ const CustomModal = (props) => {
                   onClick={props?.close}
                   variant="secondaryButton"
                   text="No"
-                />
-              </>
+                /> 
+             </>
             )}
           </div>
         </Modal.Body>

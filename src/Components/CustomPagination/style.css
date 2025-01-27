@@ -31,11 +31,13 @@
     transition: 0.3s linear
 }
 
-.customPagination .page-item:first-child .page-link, .customPagination .page-item:last-child .page-link {
+.customPagination .page-item:first-child .page-link,
+.customPagination .page-item:last-child .page-link {
     border-radius: 0;
 }
 
-.customPagination .page-item.active .page-link, .customPagination .page-item:hover .page-link {
+.customPagination .page-item.active .page-link,
+.customPagination .page-item:hover .page-link {
     color: #fff;
     background: var(--primaryColor);
     box-shadow: none;
@@ -71,4 +73,11 @@
 
 .paginationBar ul li button:hover {
     background-color: var(--grayColor);
+}
+
+.current-page {
+    background-color: white !important;
+    color: black !important;
+    border: 2px solid black !important;
+    margin: 0px 2px !important;
 }

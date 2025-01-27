@@ -48,9 +48,9 @@
 }
 
 .productImage img {
-    width: 100%;
-    object-fit: cover;
-    height: 530px;
+    width: 400px !important;
+    object-fit: contain !important;
+    height: auto !important;
 }
 
 .font-weight-bold {

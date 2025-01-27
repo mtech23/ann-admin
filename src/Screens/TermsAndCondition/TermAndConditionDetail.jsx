@@ -1,16 +1,7 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import { DashboardLayout } from "../../Components/Layout/DashboardLayout";
-import BackButton from "../../Components/BackButton";
 import CustomModal from "../../Components/CustomModal";
 import CustomButton from "../../Components/CustomButton";
 import {
-  GetBookdetail,
-  Getchaptersdetail,
-  GetchaptersDelete,
-  Getpagedetail,
-  pageDelete,
-  getpolicedetail,
   GettermsDelete,
 } from "../../api";
 import Accordion from "react-bootstrap/Accordion";
@@ -22,52 +13,21 @@ import CustomInput from "../../Components/CustomInput";
 import {
   faEdit,
   faEllipsisV,
-  faEye,
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 
-import { ordersManagement } from "../../Config/Data";
 import { Dropdown } from "react-bootstrap";
 
 export const TermsAndConditionDetails = (props) => {
-  const { id, reload, setReload } = props;
-
-  const Bookstatus = [
-    {
-      key: "0",
-      name: "Free",
-    },
-    {
-      key: "1",
-      name: "Paid",
-    },
-  ];
-  // const { id } = useParams();
-  const [chapterdata, setChapterData] = useState([]);
-
-  const base_url = process.env.REACT_APP_BASE_URL;
-  const [Bookdetail, setBookdetail] = useState({});
-  const [Policydetail, setPolicydetail] = useState({});
-  const [isChapter, setIsChapter] = useState(false);
-
+  const { id, reload, setReload, data } = props;
   const [showModal, setShowModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
   const [pageModal, setpageModal] = useState(false);
-
-  const [addpageModal, setaddpageModal] = useState(false);
-
   const [showModal2, setShowModal2] = useState(false);
   const [showModal3, setShowModal3] = useState(false);
   const [showModal4, setShowModal4] = useState(false);
-  const [message, setMessage] = useState(false);
-
-  const [pagesadd, setPagesadd] = useState();
-
   const [pagesdetail, setPagesdetail] = useState();
   const [formData, setFormData] = useState({});
-
-  const [data, setData] = useState({});
-
   const inActive = () => {
     setShowModal(false);
     setShowModal2(true);
@@ -76,24 +36,6 @@ export const TermsAndConditionDetails = (props) => {
     setShowModal3(false);
     setShowModal4(true);
   };
-  // console.log("id", id);
-
-  const policydetail = async () => {
-    try {
-      const response = await getpolicedetail(id);
-      console.log("response", response);
-
-      setPolicydetail(response?.data);
-    } catch (error) {
-      console.error("Error in logging in:", error);
-
-      // toastAlert(error, ALERT_TYPES.ERROR);
-    }
-  };
-
-  useEffect(() => {
-    policydetail();
-  }, [id]);
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormData((prevData) => ({
@@ -107,27 +49,7 @@ export const TermsAndConditionDetails = (props) => {
     document.title = "Ann | Terms & Condition Detail";
   }, []);
 
-  const editDetailData = () => {};
-  const handleEdit = (e) => {};
-
-  const policydelete = async (id) => {
-    document.querySelector(".loaderBox").classList.remove("d-none");
-    try {
-      const response = await GettermsDelete(id);
-      console.log("response", response);
-
-      if (response?.status == true) {
-        document.querySelector(".loaderBox").classList.add("d-none");
-        setReload(!reload);
-      }
-    } catch (error) {
-      document.querySelector(".loaderBox").classList.remove("d-none");
-
-      console.error("Error in logging in:", error);
-
-      // toastAlert(error, ALERT_TYPES.ERROR);
-    }
-  };
+ 
   return (
     <>
       <div className="dashCard mb-4">
@@ -141,46 +63,15 @@ export const TermsAndConditionDetails = (props) => {
             <div className="row">
               <div className="col-md-10 mb-4">
                 <p className="secondaryText">Title</p>
-                <p>{Policydetail.title}</p>
+                <p>{data.title}</p>
               </div>
-              <div className="col-md-2 mb-4">
-                <Dropdown className="tableDropdown">
-                  <Dropdown.Toggle
-                    variant="transparent"
-                    className="notButton classicToggle"
-                  >
-                    <FontAwesomeIcon icon={faEllipsisV} />
-                  </Dropdown.Toggle>
-                  <Dropdown.Menu align="end" className="tableDropdownMenu">
-                    <Link
-                      to={`/terms-condition-management/edit-terms-condition/${Policydetail?.id}`}
-                      className="tableAction"
-                    >
-                      <FontAwesomeIcon
-                        icon={faEdit}
-                        className="tableActionIcon"
-                      />
-                      Edit
-                    </Link>
-
-                    <button
-                      type="button"
-                      className="bg-transparent border-0 ps-lg-3 pt-1"
-                      onClick={() => {
-                        policydelete(Policydetail?.id);
-                      }}
-                    >
-                      <FontAwesomeIcon icon={faTrash}></FontAwesomeIcon> Delete
-                    </button>
-                  </Dropdown.Menu>
-                </Dropdown>
-              </div>
+            
 
               <div className="col-md-12 mb-4">
                 <p className="secondaryText">Description</p>
                 <p
                   dangerouslySetInnerHTML={{
-                    __html: Policydetail.description,
+                    __html: data.content,
                   }}
                 ></p>
               </div>
@@ -223,59 +114,7 @@ export const TermsAndConditionDetails = (props) => {
         heading="Marked as Active"
       />
 
-      <CustomModal
-        show={editModal}
-        close={() => {
-          setEditModal(false);
-        }}
-        heading="Edit Book Chapters"
-      >
-        <CustomInput
-          label="Chapter Title"
-          required
-          id="title"
-          type="text"
-          placeholder="Enter Chapter Title"
-          labelClass="mainLabel"
-          inputClass="mainInput"
-          name="title"
-          value={formData.title}
-          onChange={handleChange}
-        />
-
-        <CustomInput
-          label="Chapter price"
-          required
-          id="title"
-          type="text"
-          placeholder="Enter Chapter price"
-          labelClass="mainLabel"
-          inputClass="mainInput"
-          name="price"
-          value={formData?.price}
-          onChange={handleChange}
-        />
-
-        <CustomInput
-          label="Chapter Audio"
-          required
-          id="audio_file"
-          type="file"
-          placeholder="Upload Chapter Audio"
-          labelClass="mainLabel"
-          inputClass="mainInput"
-          name="audio_file"
-          onChange={handleChange}
-        />
-
-        <CustomButton
-          variant="primaryButton"
-          text="Edit"
-          type="button"
-          onClick={handleEdit}
-        />
-      </CustomModal>
-
+ 
       <CustomModal
         show={pageModal}
         close={() => {
@@ -288,7 +127,6 @@ export const TermsAndConditionDetails = (props) => {
           <p>{pagesdetail?.content}</p>
         </div>
 
-        {/* <CustomButton variant='primaryButton' text='Page Content ' type='button' onClick={handleEdit} /> */}
       </CustomModal>
 
       <CustomModal

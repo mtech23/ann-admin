@@ -16,7 +16,7 @@ export const AddBook = () => {
   const [success, setsuccess] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [formData, setFormData] = useState({
-    
+
   });
   const [BookCategories, setBookCategories] = useState();
 
@@ -29,7 +29,7 @@ export const AddBook = () => {
       }));
       setBookCategories(myCategories);
       console.log("respo", myCategories);
-    } catch (error) {}
+    } catch (error) { }
   };
   const Booktype = [
     {
@@ -77,40 +77,71 @@ export const AddBook = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
     console.log("formData", formData);
 
+    // Show loader
     document.querySelector(".loaderBox").classList.remove("d-none");
+
+    // Create FormData and append all fields
     const formDataMethod = new FormData();
     for (const key in formData) {
-      formDataMethod.append(key, formData[key]);
+      if (Array.isArray(formData[key])) {
+        formData[key].forEach((item) => {
+          formDataMethod.append(key, item);
+        });
+      } else {
+        formDataMethod.append(key, formData[key]);
+      }
     }
 
     try {
-      const response = await Addbook(formDataMethod);
+      // Get token from local storage
+      const token = localStorage.getItem("login"); // Replace "login" with the key storing your token if different.
 
-      if (response?.status === true) {
+      // Make fetch request with token in Authorization header
+      const response = await fetch('https://custom3.mystagingserver.site:5010/api/book', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`, // Attach token here
+        },
+        body: formDataMethod, // FormData for file uploads
+      });
+
+      // Check if the response is OK
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+
+      // Handle response
+      if (result?.status === true) {
         setsuccess(true);
-        setmodalText(response.message);
+        setmodalText(result.message);
         setShowModal(true);
       } else {
         setsuccess(false);
-        setmodalText(response.message);
+        setmodalText(result.message || "Something went wrong.");
         setShowModal(true);
-        console.error("Failed to add book:", response);
+        console.error("Failed to add book:", result);
       }
     } catch (error) {
+      // Handle errors
       setsuccess(false);
-
-      setmodalText(error.message);
+      setmodalText(error.message || "An unexpected error occurred.");
       setShowModal(true);
       console.error("Error in adding book:", error);
     } finally {
+      // Hide loader and navigate
       document.querySelector(".loaderBox").classList.add("d-none");
       setTimeout(() => {
         navigate("/book-management");
       }, 1000);
     }
   };
+
+
   console.log("formdata", formData);
   useEffect(() => {
     getCategory();
@@ -250,7 +281,6 @@ export const AddBook = () => {
                       <div className="col-md-6 mb-4">
                         <CustomInput
                           label="Video"
-                          required
                           id="video"
                           type="file"
                           placeholder="video"
@@ -265,7 +295,6 @@ export const AddBook = () => {
                       <div className="col-md-6 mb-4">
                         <CustomInput
                           label="Book Cover"
-                          required
                           id="resume"
                           type="file"
                           placeholder="Book Cover"

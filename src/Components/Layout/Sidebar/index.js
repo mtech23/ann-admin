@@ -4,7 +4,8 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBorderAll,
-  faBook
+  faBook,
+  faQuestion
 } from "@fortawesome/free-solid-svg-icons";
 
 import "./style.css";
@@ -59,7 +60,7 @@ export const Sidebar = props => {
             <span className="sideLinkText">Category Management</span>
           </Link>
         </li>
-        <li className="sidebar-li">
+        {/* <li className="sidebar-li">
           <Link
             className={`sideLink ${location.pathname.includes(
               "/orders-management"
@@ -73,7 +74,7 @@ export const Sidebar = props => {
             </span>
             <span className="sideLinkText">Orders Management</span>
           </Link>
-        </li>
+        </li> */}
         <li className="sidebar-li">
           <Link
             className={`sideLink ${location.pathname.includes(
@@ -104,6 +105,21 @@ export const Sidebar = props => {
             <span className="sideLinkText">Privacy Policy</span>
           </Link>
         </li>
+        <li className="sidebar-li">
+          <Link
+            className={`sideLink ${location.pathname.includes(
+              "/query-management"
+            )
+              ? "active"
+              : ""}`}
+            to="/query-management"
+          >
+            <span className="sideIcon">
+              <FontAwesomeIcon icon={faQuestion} />
+            </span>
+            <span className="sideLinkText">User Query</span>
+          </Link>
+        </li>
 
         <li className="sidebar-li">
           <Link
@@ -121,21 +137,6 @@ export const Sidebar = props => {
           </Link>
         </li>
 
-        <li className="sidebar-li">
-          <Link
-            className={`sideLink ${location.pathname.includes(
-              "/subscription-listing"
-            )
-              ? "active"
-              : ""}`}
-            to="/subscription-listing"
-          >
-            <span className="sideIcon">
-              <FontAwesomeIcon icon={faBook} />
-            </span>
-            <span className="sideLinkText">Subscription Management</span>
-          </Link>
-        </li>
       </ul>
     </div>
   );

@@ -10,7 +10,6 @@ import { DashboardLayout } from "../../Components/Layout/DashboardLayout";
 import BackButton from "../../Components/BackButton";
 import CustomInput from "../../Components/CustomInput";
 import CustomButton from "../../Components/CustomButton";
-import { SelectBox } from "../../Components/CustomSelect";
 import CustomModal from "../../Components/CustomModal";
 
 import "./style.css";
@@ -23,9 +22,18 @@ const EditProfile = () => {
   const [optionData, setOptionData] = useState({});
   const [showModal, setShowModal] = useState(false);
 
-  const handleClickPopup = () => {
-    setShowModal(true);
-  };
+
+  const [feedback, setFeedback] = useState({
+    modalHeading: "Add New Category",
+    feedbackModalHeading: "",
+    feedbackMessage: "",
+    success: false, // true for success modal, false for error modal
+    btnText: "Add",
+  });
+
+  // const handleClickPopup = () => {
+  //   setShowModal(true);
+  // };
 
   const handleClose = () => {
     setShowModal(false);
@@ -45,7 +53,7 @@ const EditProfile = () => {
     const LogoutData = localStorage.getItem("login");
 
     document.querySelector(".loaderBox").classList.remove("d-none");
-    fetch(`${process.env.REACT_APP_BASE_URL}api/aboutAuthor`, {
+    fetch(`${process.env.REACT_APP_BASE_URL}profile`, {
       method: "GET",
       headers: {
         Accept: "application/json",
@@ -55,14 +63,15 @@ const EditProfile = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data.data);
+        console.log('qqqqqqqqqqqq', data);
         document.querySelector(".loaderBox").classList.add("d-none");
-        setUserNewData(data.data);
+        setUserNewData(data.user);
       })
       .catch((error) => {
         document.querySelector(".loaderBox").classList.add("d-none");
         console.log(error);
       });
+
   };
 
   const handlefile = (event) => {
@@ -87,15 +96,15 @@ const EditProfile = () => {
     console.log("API URL:", apiUrl);
 
     const logoutData = localStorage.getItem("login");
-    document.querySelector(".loaderBox").classList.remove("d-none");
+
 
     const formDataMethod = new FormData();
 
     for (const key in userNewData) {
       formDataMethod.append(key, userNewData[key]);
     }
-
-    fetch(`${apiUrl}api/addAuthorDetails`, {
+    document.querySelector(".loaderBox").classList.remove("d-none");
+    fetch(`${apiUrl}profile`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${logoutData}`,
@@ -103,24 +112,36 @@ const EditProfile = () => {
       body: formDataMethod,
     })
       .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
+
         return response.json();
       })
       .then((data) => {
-        console.log("datas", data.data);
-        document.querySelector(".loaderBox").classList.add("d-none");
-
-        if (data?.status == true) {
-          setShowModal(true);
-        } else {
+        if (data?.success) {
+          setFeedback({
+            modalHeading: "Success",
+            feedbackModalHeading: "Profile Updated",
+            feedbackMessage: data.message,
+            success: data.success,
+          })
+          setShowModal(true)
         }
+
+        userprofile();
+
       })
       .catch((error) => {
-        document.querySelector(".loaderBox").classList.add("d-none");
         console.error("Error:", error);
+        setFeedback({
+          modalHeading: "Error",
+          feedbackModalHeading: "Update Failed",
+          feedbackMessage: error.message,
+          success: error.success,
+        });
+
+        setShowModal(true)
       });
+
+    document.querySelector(".loaderBox").classList.add("d-none");
   };
 
   return (
@@ -146,7 +167,7 @@ const EditProfile = () => {
                           src={
                             userNewData?.image instanceof File
                               ? URL.createObjectURL(userNewData?.image)
-                              : baseurl + userNewData?.image
+                              : 'https://custom3.mystagingserver.site/ann-api' + userNewData?.image
                           }
                         />
 
@@ -186,58 +207,25 @@ const EditProfile = () => {
                             }}
                           />
                         </div>
-                      </div>
-                      <div className="row">
                         <div className="col-12 mb-3">
-                          {/* <h4 className="secondaryLabel">Email Address</h4>
-                                                    <p className="secondaryText">{userData.email}</p> */}
                           <CustomInput
-                            label="Email"
+                            label="Phone No"
                             labelClass="mainLabel"
                             required
-                            type="email"
-                            placeholder="Phone Number"
+                            type="text"
+                            placeholder="Enter Phone Number"
                             inputClass="mainInput"
-                            value={userNewData?.email}
+                            value={userNewData?.phoneNo}
                             onChange={(event) => {
                               setUserNewData({
                                 ...userNewData,
-                                email: event.target.value,
+                                phoneNo: event.target.value,
                               });
                             }}
                           />
                         </div>
                       </div>
-                      {/* <div className="row">
-                                                <div className="col-12 mb-3">
-                                                    <CustomInput label="Phone Number" labelClass="mainLabel" required type="number" placeholder="Phone Number" inputClass="mainInput" onChange={(event) => { setUserNewData({ ...userNewData, name: event.target.value }) }} />
-                                                </div>
-                                            </div> */}
 
-                      <div className="inputWrapper col-md-8">
-                        <div className="form-controls">
-                          <label className=" mb-2" htmlFor="">
-                            Discripction
-                          </label>
-                          <textarea
-                            name="content"
-                            className="form-control shadow border-0"
-                            id="description"
-                            cols="30"
-                            rows="10"
-                            // value={formData?.content}
-                            // onChange={handleChange}
-
-                            value={userNewData?.description}
-                            onChange={(event) => {
-                              setUserNewData({
-                                ...userNewData,
-                                description: event.target.value,
-                              });
-                            }}
-                          ></textarea>
-                        </div>
-                      </div>
                     </div>
                     <div className="col-12">
                       <CustomButton
@@ -245,7 +233,6 @@ const EditProfile = () => {
                         variant="primaryButton"
                         className="me-3 mb-2"
                         text="Save"
-                        onClick={handleClickPopup}
                       />
                       <CustomButton
                         type="button"
@@ -267,10 +254,11 @@ const EditProfile = () => {
         </div>
         <CustomModal
           show={showModal}
-          close={handleClose}
-          success
-          heading="Your profile is Successfully Updated! Continue"
-        />
+          close={() => setShowModal(false)}
+          success={feedback.success}
+          heading={feedback.feedbackMessage}
+        >
+        </CustomModal>
       </DashboardLayout>
     </>
   );

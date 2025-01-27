@@ -8,7 +8,7 @@ export const ProtectedRoutes = (props) => {
         if (!login) {
             navigate('/login');
         }
-    })
+    }, [navigate])
     return (
         <>
             <Components />
