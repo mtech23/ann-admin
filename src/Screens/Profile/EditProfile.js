@@ -212,7 +212,7 @@ const EditProfile = () => {
                             label="Phone No"
                             labelClass="mainLabel"
                             required
-                            type="text"
+                            type="number"
                             placeholder="Enter Phone Number"
                             inputClass="mainInput"
                             value={userNewData?.phoneNo}
