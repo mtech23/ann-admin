@@ -109,7 +109,7 @@ const AdminLogin = () => {
             </div>
             <Link
               to={"/forget-password"}
-              className="text-decoration-underline text-theme-primary"
+              className="text-decoration-underline text-light"
             >
               Forget Password?
             </Link>

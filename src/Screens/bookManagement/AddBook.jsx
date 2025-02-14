@@ -15,9 +15,7 @@ export const AddBook = () => {
   const [modalText, setmodalText] = useState("");
   const [success, setsuccess] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const [formData, setFormData] = useState({
-
-  });
+  const [formData, setFormData] = useState({});
   const [BookCategories, setBookCategories] = useState();
 
   const getCategory = async (first) => {
@@ -25,25 +23,25 @@ export const AddBook = () => {
       const respo = await getEntity("category");
       const myCategories = respo.data.map((item) => ({
         id: item.id,
-        name: item.title
+        name: item.title,
       }));
       setBookCategories(myCategories);
       console.log("respo", myCategories);
-    } catch (error) { }
+    } catch (error) {}
   };
   const Booktype = [
     {
       key: "0",
-      name: "eBook"
+      name: "eBook",
     },
     {
       key: "1",
-      name: "AudioBook"
+      name: "AudioBook",
     },
     {
       key: "2",
-      name: "Both"
-    }
+      name: "Both",
+    },
   ];
 
   const handleChange = (event) => {
@@ -53,12 +51,12 @@ export const AddBook = () => {
         value == "out of stock" ? false : value == "available" ? true : "";
       setFormData((prevData) => ({
         ...prevData,
-        [name]: val
+        [name]: val,
       }));
     } else {
       setFormData((prevData) => ({
         ...prevData,
-        [name]: value
+        [name]: value,
       }));
     }
   };
@@ -70,7 +68,7 @@ export const AddBook = () => {
       const fileName = file;
       setFormData((prevData) => ({
         ...prevData,
-        [name]: fileName
+        [name]: fileName,
       }));
     }
   };
@@ -100,13 +98,16 @@ export const AddBook = () => {
       const token = localStorage.getItem("login"); // Replace "login" with the key storing your token if different.
 
       // Make fetch request with token in Authorization header
-      const response = await fetch('https://custom3.mystagingserver.site:5010/api/book', {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${token}`, // Attach token here
-        },
-        body: formDataMethod, // FormData for file uploads
-      });
+      const response = await fetch(
+        "https://custom3.mystagingserver.site:5010/api/book",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`, // Attach token here
+          },
+          body: formDataMethod, // FormData for file uploads
+        }
+      );
 
       // Check if the response is OK
       if (!response.ok) {
@@ -120,6 +121,9 @@ export const AddBook = () => {
         setsuccess(true);
         setmodalText(result.message);
         setShowModal(true);
+        setTimeout(() => {
+          navigate("/book-management");
+        }, 1000);
       } else {
         setsuccess(false);
         setmodalText(result.message || "Something went wrong.");
@@ -135,12 +139,8 @@ export const AddBook = () => {
     } finally {
       // Hide loader and navigate
       document.querySelector(".loaderBox").classList.add("d-none");
-      setTimeout(() => {
-        navigate("/book-management");
-      }, 1000);
     }
   };
-
 
   console.log("formdata", formData);
   useEffect(() => {
@@ -149,7 +149,7 @@ export const AddBook = () => {
   const handleQuillChange = (value) => {
     setFormData((prevData) => ({
       ...prevData,
-      description: value
+      description: value,
     }));
   };
   return (
@@ -387,11 +387,13 @@ export const AddBook = () => {
                           onChange={handleChange}
                         />
                       </div> */}
+
                       <div className="col-md-12 mb-4">
                         <div className="inputWrapper">
                           <div className="form-controls">
                             <label htmlFor="description">Description</label>
                             <ReactQuill
+                              style={{ height: 200, marginBottom: 50 }}
                               value={formData?.description}
                               onChange={handleQuillChange}
                             />

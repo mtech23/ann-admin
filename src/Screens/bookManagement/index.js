@@ -54,8 +54,6 @@ export const BookManagement = () => {
     document.querySelector(".loaderBox").classList.remove("d-none");
     try {
       const response = await Getbookslist(search, page);
-      console.log('aaaaaaaaaaa', response);
-
       document.querySelector(".loaderBox").classList.add("d-none");
       settotalItems(response.totalBooks)
       setCurrentPage(response.currentPage)
@@ -118,12 +116,12 @@ export const BookManagement = () => {
     { key: "Cover", title: "Cover" },
     { key: "Title", title: "Title" },
     { key: "category", title: "category" },
-
+    { key: "approved", title: "approved" },
     { key: "action", title: "Action" },
   ];
 
 
-  console.log("filterData", currentItems);
+
   return (
     <>
       <DashboardLayout>
@@ -172,6 +170,7 @@ export const BookManagement = () => {
                             <td>{item.id}</td>
                             <td><img src={`https://custom3.mystagingserver.site/ann-api/${item.cover}`} class="avatarIcon  rounded-3 ml-5" width="10px" height="10px" /></td>
                             <td className="text-capitalize">{item?.title}</td>
+                            <td className={`text-capitalize text-${item.approved ? 'success' : 'danger'}`}>{item?.approved ? "Approved" : "Rejected"}</td>
                             <td>{item?.category?.title || "N/A"}</td>
 
                             <td>

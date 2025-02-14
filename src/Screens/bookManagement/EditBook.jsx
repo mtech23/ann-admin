@@ -21,6 +21,10 @@ export const EditBook = () => {
     cover: "",
   });
   const [categories, setCategories] = useState([]);
+  const [approvedStatus, setApprovedStatus] = useState([
+    { id: true, name: "Approved", value: true },
+    { id: false, name: "Rejected", value: false },
+  ]);
 
   const [feedback, setFeedback] = useState({
     modalHeading: "Add New Category",
@@ -83,7 +87,6 @@ export const EditBook = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log("formData", formData);
 
     const formDataMethod = new FormData();
     for (const key in formData) {
@@ -95,20 +98,20 @@ export const EditBook = () => {
 
     try {
       const resp = await Addbook(formDataMethod, id);
-
+      console.log("respresprespresprespresp", resp);
       if (resp?.status) {
         setFeedback({
           modalHeading: "Success",
-          feedbackModalHeading:  "Category Updated" ,
+          feedbackModalHeading: "Category Updated",
           feedbackMessage: resp.message,
           success: resp.success,
         });
         navigate("/book-management");
-      } 
+      }
     } catch (error) {
       setFeedback({
         modalHeading: "Error",
-        feedbackModalHeading:  "Update Failed",
+        feedbackModalHeading: "Update Failed",
         feedbackMessage: error.message,
         success: error.success,
       });
@@ -122,11 +125,10 @@ export const EditBook = () => {
     document.title = "Ann | Edit Book";
   }, []);
 
-  console.log("frodataaaa", formData);
   const handleQuillChange = (value) => {
     setFormData((prevData) => ({
       ...prevData,
-      description: value
+      description: value,
     }));
   };
   return (
@@ -164,7 +166,6 @@ export const EditBook = () => {
                       <div className="col-md-6 mb-4">
                         <CustomInput
                           label="Title"
-
                           id="jobID"
                           type="text"
                           placeholder="Enter Title"
@@ -207,7 +208,6 @@ export const EditBook = () => {
                           name="CategoryId"
                           label="Select Book Category"
                           placeholder="Select Book Category"
-
                           value={formData?.CategoryId}
                           option={categories}
                           onChange={handleChange}
@@ -258,7 +258,6 @@ export const EditBook = () => {
                       <div className="col-md-6 mb-4">
                         <CustomInput
                           label="Video Trailer"
-
                           id="resume"
                           type="file"
                           placeholder="video trailer"
@@ -273,7 +272,6 @@ export const EditBook = () => {
                       <div className="col-md-6 mb-4">
                         <CustomInput
                           label="Book Cover"
-
                           id="resume"
                           type="file"
                           placeholder="Book Cover"
@@ -366,11 +364,23 @@ export const EditBook = () => {
                           onChange={handleChange}
                         />
                       </div> */}
+                      <div className="col-md-6 mb-4">
+                        <SelectBox
+                          selectClass="mainInput"
+                          name="approved"
+                          label="Approved"
+                          placeholder="Status"
+                          value={formData?.approved}
+                          option={approvedStatus}
+                          onChange={handleChange}
+                        />
+                      </div>
                       <div className="col-md-12 mb-4">
                         <div className="inputWrapper">
                           <div className="form-controls">
                             <label htmlFor="description">Description</label>
                             <ReactQuill
+                              style={{ height: 200, marginBottom: 50 }}
                               value={formData?.description}
                               onChange={handleQuillChange}
                             />
@@ -396,9 +406,7 @@ export const EditBook = () => {
           close={() => setShowModal(false)}
           success={feedback.success}
           heading={feedback.feedbackMessage}
-        >
-        </CustomModal>
-
+        ></CustomModal>
       </DashboardLayout>
     </>
   );
