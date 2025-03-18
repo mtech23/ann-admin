@@ -12,6 +12,13 @@ import { EditBook } from "../Screens/bookManagement/EditBook";
 import { BookDetails } from "../Screens/bookManagement/BookDetail";
 
 
+import { FeaturePlanManagement } from "../Screens/featurePlanManagement/index";
+import { AddPlan } from "../Screens/featurePlanManagement/AddPlan";
+import { EditPlan } from "../Screens/featurePlanManagement/EditPlan";
+import { PlanDetail } from "../Screens/featurePlanManagement/PlanDetail";
+
+import { FeatureBooks } from "../Screens/featureBannerManagement/index";
+
 
 import { PoliciesManagement } from "../Screens/policies";
 import { AddPolicies } from "../Screens/policies/AddPolicies";
@@ -64,7 +71,30 @@ export default function AdminRouter() {
           path="/book-management/edit-book/:id"
           element={<ProtectedRoutes Components={EditBook} />}
         />
-
+    <Route
+          path="/plan-management"
+          element={<ProtectedRoutes Components={FeaturePlanManagement} />}
+        />
+         <Route
+          path="plan-management/Create-plan"
+          element={<ProtectedRoutes Components={AddPlan} />}
+        />
+        <Route
+          path="/plan-management/edit-plan/:id"
+          element={<ProtectedRoutes Components={EditPlan} />}
+        />
+        <Route
+          path="/plan-management/edit-plan/:id"
+          element={<ProtectedRoutes Components={EditPlan} />}
+        />
+          <Route
+          path="/plan-management/plan-details/:id"
+          element={<ProtectedRoutes Components={PlanDetail} />}
+        />
+         <Route
+          path="/Feature-book"
+          element={<ProtectedRoutes Components={FeatureBooks} />}
+        />
         <Route
           path="/query-management"
           element={<ProtectedRoutes Components={UserQuery} />}

@@ -99,7 +99,7 @@ export const Header = (props) => {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data.user);
+      
         document.querySelector(".loaderBox").classList.add("d-none");
         setUserNewData(data.user);
       })
