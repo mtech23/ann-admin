@@ -3,12 +3,11 @@ import { DashboardLayout } from "../../Components/Layout/DashboardLayout";
 import BackButton from "../../Components/BackButton";
 import CustomModal from "../../Components/CustomModal";
 import CustomInput from "../../Components/CustomInput";
-import { Addbook } from "../../api";
-import { SelectBox } from "../../Components/CustomSelect";
+
 import CustomButton from "../../Components/CustomButton";
 import { useNavigate } from "react-router";
-import { getEntity, toastAlert } from "../../utils";
-import ReactQuill from "react-quill";
+import {  toastAlert } from "../../utils";
+
 import "react-quill/dist/quill.snow.css";
 export const AddPlan = () => {
   const navigate = useNavigate();

@@ -153,6 +153,16 @@ export const EditPlan = () => {
       description: value,
     }));
   };
+
+   const handleDurationChange = (event) => {
+    const { value } = event.target;
+    const durationInDays = value * 30; // Convert months to days (1 month = 30 days)
+    setFormData((prevData) => ({
+      ...prevData,
+      duration: durationInDays,
+    }));
+  };
+
   return (
     <>
       <DashboardLayout>
@@ -161,7 +171,7 @@ export const EditPlan = () => {
             <div className="col-12 mb-2">
               <h2 className="mainTitle">
                 <BackButton />
-                Edit Book
+                Edit Book +++
               </h2>
             </div>
           </div>

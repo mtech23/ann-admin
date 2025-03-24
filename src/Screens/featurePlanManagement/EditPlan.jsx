@@ -153,6 +153,15 @@ export const EditPlan = () => {
       description: value,
     }));
   };
+
+  const handleDurationChange = (event) => {
+    const { value } = event.target;
+    const durationInDays = value * 30; // Convert months to days (1 month = 30 days)
+    setFormData((prevData) => ({
+      ...prevData,
+      duration: durationInDays,
+    }));
+  };
   return (
     <>
       <DashboardLayout>
@@ -161,7 +170,7 @@ export const EditPlan = () => {
             <div className="col-12 mb-2">
               <h2 className="mainTitle">
                 <BackButton />
-                Edit Book
+                Edit Book 
               </h2>
             </div>
           </div>
@@ -231,18 +240,23 @@ export const EditPlan = () => {
                       </div>
                     
                       <div className="col-md-6 mb-4">
-                        <CustomInput
-                          label="Duration"
-                          required
-                          id="jobID"
-                          type="number"
-                          placeholder="Enter Duration of this plan"
-                          labelClass="mainLabel"
-                          inputClass="mainInput"
-                          name="duration"
-                          value={formData.duration}
-                          onChange={handleChange}
-                        />
+                        <div className="inputWrapper">
+                          <label className="mainLabel">Duration (Months)</label>
+                          <select
+                            className="mainInput"
+                            name="duration"
+                            onChange={handleDurationChange}
+                            value={formData.duration / 30} // Convert days back to months for display
+                          >
+                            <option value="">Select Duration</option>
+                            {[...Array(12)].map((_, index) => (
+                              <option key={index + 1} value={index + 1}>
+                                {index + 1} Month{index + 1 > 1 ? "s" : ""} (
+                                {(index + 1) * 30} days)
+                              </option>
+                            ))}
+                          </select>
+                        </div>
                       </div>
                       {/* <div className="col-md-12 mb-4">
                         <div className="inputWrapper">

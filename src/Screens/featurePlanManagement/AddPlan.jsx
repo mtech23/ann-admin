@@ -19,8 +19,6 @@ export const AddPlan = () => {
 
 
 
-
-
   const handleChange = (event) => {
     const { name, value } = event.target;
     
@@ -122,6 +120,14 @@ export const AddPlan = () => {
     }
   };
 
+  const handleDurationChange = (event) => {
+    const { value } = event.target;
+    const durationInDays = value * 30; // Convert months to days (1 month = 30 days)
+    setFormData((prevData) => ({
+      ...prevData,
+      duration: durationInDays,
+    }));
+  };
 
  
   // const handleQuillChange = (value) => {
@@ -138,7 +144,7 @@ export const AddPlan = () => {
             <div className="col-12 mb-2">
               <h2 className="mainTitle">
                 <BackButton />
-         Create new plan
+         Create new plan 
               </h2>
             </div>
           </div>
@@ -148,20 +154,7 @@ export const AddPlan = () => {
                 <div className="row">
                   <div className="col-lg-12">
                     <div className="row">
-                      {/* <div className="col-md-6 mb-4">
-                        <CustomInput
-                          label="ISBN"
-                          required
-                          id="ISBN"
-                          type="text"
-                          placeholder="Enter ISBN"
-                          labelClass="mainLabel"
-                          inputClass="mainInput"
-                          name="ISBN"
-                          value={formData.ISBN}
-                          onChange={handleChange}
-                        />
-                      </div> */}
+                  
                       <div className="col-md-6 mb-4">
                         <CustomInput
                           label="Title"
@@ -208,36 +201,26 @@ export const AddPlan = () => {
                       </div>
                     
                       <div className="col-md-6 mb-4">
-                        <CustomInput
-                          label="Duration"
-                          required
-                          id="jobID"
-                          type="number"
-                          placeholder="Enter Duration of this plan"
-                          labelClass="mainLabel"
-                          inputClass="mainInput"
-                          name="duration"
-                          value={formData.duration}
-                          onChange={handleChange}
-                        />
+                        <div className="inputWrapper">
+                          <label className="mainLabel">Duration (Months)</label>
+                          <select
+                            className="mainInput"
+                            name="duration"
+                            onChange={handleDurationChange}
+                            value={formData.duration / 30} // Convert days back to months for display
+                          >
+                            <option value="">Select Duration</option>
+                            {[...Array(12)].map((_, index) => (
+                              <option key={index + 1} value={index + 1}>
+                                {index + 1} Month{index + 1 > 1 ? "s" : ""} (
+                                {(index + 1) * 30} days)
+                              </option>
+                            ))}
+                          </select>
+                        </div>
                       </div>
                       
 
-                      
-                      
-
-                      {/* <div className="col-md-12 mb-4">
-                        <div className="inputWrapper">
-                          <div className="form-controls">
-                            <label htmlFor="description">Description</label>
-                            <ReactQuill
-                              style={{ height: 200, marginBottom: 50 }}
-                              value={formData?.description}
-                              onChange={handleQuillChange}
-                            />
-                          </div>
-                        </div>
-                      </div> */}
                       <div className="col-md-12">
                         <CustomButton
                           variant="primaryButton"

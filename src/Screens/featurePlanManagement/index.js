@@ -139,7 +139,7 @@ export const FeaturePlanManagement = () => {
     { key: "id", title: "S.No" },
     { key: "Title", title: "Title" },
     { key: "Description", title: "Description" },
-    { key: "Duration", title: "Duration" },
+    { key: "Month", title: "Month" },
     { key: "Amount", title: "Amount" },
     { key: "action", title: "Action" },
   ];
@@ -195,7 +195,7 @@ export const FeaturePlanManagement = () => {
                             <td className="text-capitalize">
                               {item?.description}
                             </td>
-                            <td>{item?.duration}</td>
+                            <td>{item?.duration ? item.duration / 30 : ""}</td>
                             <td>{item?.amount}</td>
 
                             <td>
